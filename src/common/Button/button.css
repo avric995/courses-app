@@ -1,0 +1,8 @@
+.btn{
+    background-color: #fff;
+    color: rgb(61, 61, 61);
+    border: 1px solid purple;
+
+    padding: 0.6rem 1.2rem;
+    cursor: pointer;
+}

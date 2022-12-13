@@ -1,0 +1,27 @@
+
+.header{
+    margin: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem;
+    border: 1px solid red;
+    height: 13rem;
+}
+
+.logo {
+   width: 10rem;
+}
+
+
+.btn-div{
+    width: 15rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.user-loged{
+    font-size: 1.6rem;
+    font-weight: 500;
+}
