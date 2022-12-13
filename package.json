@@ -18,7 +18,7 @@
     "eject": "react-scripts eject",
     "test:nowatch": "react-scripts test --watchAll=false",
     "prepare": "husky install",
-    "prepublish": "npm run eslint --fix"
+    "prepublish": "eslint --fix --ext .js,.jsx ."
   },
   "eslintConfig": {
     "extends": [
