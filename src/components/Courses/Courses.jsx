@@ -50,7 +50,9 @@ const Courses = () => {
 							}
 						})
 						.map((course) => {
-							return <CourseCard key={course.id} {...course} />;
+							return (
+								<CourseCard key={course.id} {...course} authorsList={authors} />
+							);
 						})}
 				</div>
 			</section>
