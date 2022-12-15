@@ -1,0 +1,9 @@
+.container{
+    border: 1px solid green;
+    padding: 3rem;
+}
+
+.section-element{
+    display: flex;
+    justify-content: space-between;
+}
