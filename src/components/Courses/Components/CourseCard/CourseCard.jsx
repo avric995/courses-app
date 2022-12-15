@@ -2,6 +2,7 @@ import React from 'react';
 import './courseCard.css';
 import Button from '../../../../common/Button/Button';
 import time_convert from '../../../../helpers/pripeDuration';
+import formatDate from '../../../../helpers/formatDate';
 
 const CourseCard = ({
 	id,
@@ -25,7 +26,7 @@ const CourseCard = ({
 						Duration: <span>{time_convert(duration)}</span>{' '}
 					</h4>
 					<h4>
-						Created: <span> {creationDate} </span>
+						Created: <span> {formatDate(creationDate)} </span>
 					</h4>
 					<Button value='Show course' />
 				</div>
