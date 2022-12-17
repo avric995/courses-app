@@ -4,58 +4,48 @@ import { mockedCoursesList, mockedAuthorsList } from '../../constants.js';
 import './courses.css';
 import SearchBar from './Components/SearchBar/SearchBar';
 import Button from '../../common/Button/Button';
+import CreateCourse from '../CreateCourse/CreateCourse';
 
 const Courses = () => {
 	const [courses, setCourses] = useState(mockedCoursesList);
 	const [authors, setAuthors] = useState(mockedAuthorsList);
 
 	const [query, setQuery] = useState('');
-	// console.log(query);
+	const [isShown, setIsShown] = useState(false);
 
-	// proba za search
-	const newCourses = courses.filter((course) => {
-		if (query === '') {
-			return course;
-		} else if (
-			course.title.toLowerCase().includes(query.toLowerCase()) ||
-			course.id.toLowerCase().includes(query.toLowerCase())
-		) {
-			return course;
-		}
-	});
-
-	// console.log(newCourses);
+	const handleClick = () => {
+		setIsShown(!isShown);
+	};
 
 	return (
 		<main>
-			<section className='container'>
-				<div className='section-element'>
-					<SearchBar
-						placeholderText='Enter course name or id...'
-						onChange={(event) => setQuery(event.target.value)}
-						query={query}
-					/>
-					<Button value='Add new course' />
-				</div>
-				<div>
-					{courses
-						.filter((course) => {
-							if (query === '') {
-								return course;
-							} else if (
-								course.title.toLowerCase().includes(query.toLowerCase()) ||
-								course.id.toLowerCase().includes(query.toLowerCase())
-							) {
-								return course;
-							}
-						})
-						.map((course) => {
+			(
+			{!isShown ? (
+				<section className='container-list'>
+					<div className='section-element'>
+						<SearchBar
+							placeholderText='Enter course name or id...'
+							onChange={(event) => setQuery(event.target.value)}
+							coursesFilter={mockedCoursesList}
+							setCourses={setCourses}
+							query={query}
+						/>
+						<Button value='Add new course' onClick={handleClick} />
+					</div>
+					<div>
+						{courses.map((course) => {
 							return (
 								<CourseCard key={course.id} {...course} authorsList={authors} />
 							);
 						})}
-				</div>
-			</section>
+					</div>
+				</section>
+			) : (
+				<section className='container-add'>
+					<CreateCourse />
+					<button onClick={handleClick}>Revert</button>
+				</section>
+			)}
 		</main>
 	);
 };

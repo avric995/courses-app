@@ -1,9 +1,9 @@
 import React from 'react';
 import './input.css';
 
-const Input = ({ placeholderText, onChange }) => {
+const Input = ({ placeholderText, onChange, lableText }) => {
 	return (
-		<>
+		<div className='input'>
 			<label htmlFor='text'></label>
 			<input
 				type='text'
@@ -12,7 +12,7 @@ const Input = ({ placeholderText, onChange }) => {
 				id='text'
 				onChange={onChange}
 			/>
-		</>
+		</div>
 	);
 };
 

@@ -1,0 +1,18 @@
+.header-div{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.header-div button {
+   align-self: flex-end;
+}
+.input-div{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+label {
+    font-size: 1.6rem;
+}
+
