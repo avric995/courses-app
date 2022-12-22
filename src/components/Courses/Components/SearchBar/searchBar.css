@@ -7,4 +7,9 @@
 .search-div button {
     width: 10rem;
     margin-left: 2rem;
+    align-self: flex-end;
+}
+
+.search-div input {
+    width: 40rem;
 }
