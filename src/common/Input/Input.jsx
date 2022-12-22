@@ -3,8 +3,8 @@ import './input.css';
 
 const Input = ({ placeholderText, onChange, lableText }) => {
 	return (
-		<div className='input'>
-			<label htmlFor='text'></label>
+		<div className='input-div'>
+			<label htmlFor='text'>{lableText}</label>
 			<input
 				type='text'
 				placeholder={placeholderText}
