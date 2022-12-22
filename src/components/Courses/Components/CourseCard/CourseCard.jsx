@@ -23,14 +23,14 @@ const CourseCard = ({
 				<div className='flex-2'>
 					{/* spread operator <h4>Authors: {...authors}</h4> */}
 					<h4>
-						Author:{' '}
+						Author:
 						<span>{`${findAutor(authorsList, authors).substring(
 							0,
 							25
 						)}...`}</span>
 					</h4>
 					<h4>
-						Duration: <span>{time_convert(duration)}</span>{' '}
+						Duration: <span>{time_convert(duration)}</span>
 					</h4>
 					<h4>
 						Created: <span> {formatDate(creationDate)} </span>

@@ -19,7 +19,6 @@ const Courses = () => {
 
 	return (
 		<main>
-			(
 			{!isShown ? (
 				<section className='container-list'>
 					<div className='section-element'>
@@ -42,7 +41,7 @@ const Courses = () => {
 				</section>
 			) : (
 				<section className='container-add'>
-					<CreateCourse />
+					<CreateCourse authors={authors} />
 					<button onClick={handleClick}>Revert</button>
 				</section>
 			)}

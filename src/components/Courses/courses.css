@@ -8,6 +8,10 @@
     justify-content: space-between;
 }
 
+.section-element button {
+    align-self: flex-end;
+}
+
 .container-add{
     border: 1px solid green;
     padding: 3rem;
