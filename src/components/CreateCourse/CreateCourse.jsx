@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-// import Input from '../../common/Input/Input';
 import './createCourse.css';
 import Input from '../../common/Input/Input';
 import Button from '../../common/Button/Button';
 import time_convert from '../../helpers/pripeDuration';
-import { mockedAuthorsList } from '../../constants';
+// import { mockedAuthorsList } from '../../constants';
 
 const CreateCourse = ({
 	authors,
@@ -51,6 +50,10 @@ const CreateCourse = ({
 			setAllAuthors([...allAuthors, newAuthor]);
 			setAuthors(newAuthors);
 		}
+
+		const inputField = document.querySelector('.input-author');
+		console.log(inputField);
+		inputField.value = '';
 	};
 	console.log(allAuthors);
 
@@ -192,6 +195,7 @@ const CreateCourse = ({
 						type='text'
 						min='2'
 						onChange={handleAddFormChange}
+						className='input-author'
 					/>
 					<Button value='Create Author' onClick={handleAddFormSubmit} />
 				</div>
