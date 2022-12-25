@@ -1,13 +1,14 @@
 import React from 'react';
 import './input.css';
 
-const Input = ({ placeholderText, onChange, lableText, name }) => {
+const Input = ({ placeholderText, onChange, lableText, name, type, min }) => {
 	return (
 		<div className='input-div'>
 			<label htmlFor='text'>{lableText}</label>
 			<input
-				type='text'
+				type={type}
 				placeholder={placeholderText}
+				min={min}
 				name={name}
 				id='text'
 				onChange={onChange}

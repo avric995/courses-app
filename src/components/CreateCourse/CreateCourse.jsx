@@ -4,7 +4,7 @@ import './createCourse.css';
 import Input from '../../common/Input/Input';
 import Button from '../../common/Button/Button';
 import time_convert from '../../helpers/pripeDuration';
-// import { mockedAuthorsList } from '../../constants';
+import { mockedAuthorsList } from '../../constants';
 
 const CreateCourse = ({
 	authors,
@@ -18,6 +18,8 @@ const CreateCourse = ({
 	const [addAuthor, setAddAuthor] = useState({
 		name: '',
 	});
+
+	const [allAuthors, setAllAuthors] = useState(mockedAuthorsList);
 
 	const handleAddFormChange = (event) => {
 		event.preventDefault();
@@ -34,14 +36,23 @@ const CreateCourse = ({
 
 	const handleAddFormSubmit = (event) => {
 		event.preventDefault();
-		const newAuthor = {
-			id: Math.random(),
-			name: addAuthor.name,
-		};
+		const name = addAuthor.name;
+		if (name === '') {
+			alert('Input name cant be empty');
+		} else if (name.length <= 2) {
+			alert('Must contain 2 or more char');
+		} else {
+			const newAuthor = {
+				id: Math.random() + '',
+				name: name,
+			};
 
-		const newAuthors = [...authors, newAuthor];
-		setAuthors(newAuthors);
+			const newAuthors = [...authors, newAuthor];
+			setAllAuthors([...allAuthors, newAuthor]);
+			setAuthors(newAuthors);
+		}
 	};
+	console.log(allAuthors);
 
 	// Add duration
 	const [duration, setDuration] = useState(0);
@@ -57,15 +68,39 @@ const CreateCourse = ({
 	};
 
 	// add course author
-	const [courseAuthor, setCourseAuthor] = useState([]);
+	const [courseAuthorIds, setCourseAuthorIds] = useState([]);
+	const [courseAuthorsList, setCourseAuthorsList] = useState([]);
 
 	const addCourseAut = (id) => {
 		const newAuthors = authors.filter((autor) => autor.id !== id);
 		setAuthors(newAuthors);
 
-		const courseAuthorsId = [...courseAuthor, id];
-		setCourseAuthor(courseAuthorsId);
+		const courseAuthorNew = authors.filter((author) => author.id === id);
+		const courseAuthorList = [...courseAuthorsList, ...courseAuthorNew];
+		setCourseAuthorsList(courseAuthorList);
+
+		const courseAuthorsId = [...courseAuthorIds, id];
+		setCourseAuthorIds(courseAuthorsId);
 	};
+
+	//remove course author
+
+	const removeCourseAut = (id) => {
+		const authorsOnCourse = courseAuthorsList.filter(
+			(author) => author.id !== id
+		);
+		setCourseAuthorsList(authorsOnCourse);
+
+		const deletedCourseAuthor = courseAuthorsList.filter(
+			(author) => author.id === id
+		);
+		setAuthors([...authors, ...deletedCourseAuthor]);
+
+		setCourseAuthorIds(courseAuthorIds.filter((authorId) => authorId !== id));
+	};
+
+	// logging id-s
+	// console.log(courseAuthorIds);
 
 	// add course
 
@@ -91,25 +126,37 @@ const CreateCourse = ({
 		event.preventDefault();
 		const today = new Date();
 		const yyyy = today.getFullYear();
-		let mm = today.getMonth() + 1; // Months start at 0!
+		let mm = today.getMonth() + 1; // Meseci krecu od 0!
 		let dd = today.getDate();
 
 		if (dd < 10) dd = '0' + dd;
 		if (mm < 10) mm = '0' + mm;
 
 		const formattedToday = dd + '/' + mm + '/' + yyyy;
+
 		const newCourse = {
-			id: Math.random(),
+			id: Math.random() + '',
 			title: addCourse.title,
 			description: addCourse.description,
 			creationDate: formattedToday,
-			duration: parseInt(duration),
-			authors: courseAuthor,
+			duration: duration,
+			authors: courseAuthorIds.length === 0 ? [] : courseAuthorIds,
 		};
 
-		const newCourses = [...courses, newCourse];
-		setCourses(newCourses);
-		setIsShown(!isShown);
+		if (
+			newCourse.title === '' ||
+			newCourse.description === '' ||
+			duration === 0
+		) {
+			alert('Must fill all fields');
+		} else if (newCourse.authors.length === 0) {
+			alert('Please select authors');
+		} else {
+			const newCourses = [...courses, newCourse];
+			setCourses(newCourses);
+			setAuthors(allAuthors);
+			setIsShown(!isShown);
+		}
 		// console.log(newCourses);
 	};
 
@@ -118,6 +165,7 @@ const CreateCourse = ({
 			<div className='header-div'>
 				<Input
 					placeholderText='Enter title...'
+					type='text'
 					lableText='Title'
 					name='title'
 					onChange={handleAddCourseFormChange}
@@ -141,6 +189,8 @@ const CreateCourse = ({
 						placeholderText='Input author name...'
 						lableText='Author name'
 						name='name'
+						type='text'
+						min='2'
 						onChange={handleAddFormChange}
 					/>
 					<Button value='Create Author' onClick={handleAddFormSubmit} />
@@ -165,6 +215,8 @@ const CreateCourse = ({
 					<h2>Duration</h2>
 					<Input
 						placeholderText='Enter duration in minutes...'
+						type='number'
+						min='0'
 						lableText='Duration'
 						name='duration'
 						onChange={handleAddDurationChange}
@@ -176,13 +228,13 @@ const CreateCourse = ({
 				<div className='course-authors'>
 					<h2>Course Authors</h2>
 					<ul>
-						{courseAuthor.map((author) => {
+						{courseAuthorsList.map((author) => {
 							return (
 								<li key={author.id}>
-									{author}
+									{author.name}
 									<Button
 										value='Remove Author'
-										onClick={() => addCourseAut(author.id)}
+										onClick={() => removeCourseAut(author.id)}
 									/>
 								</li>
 							);
