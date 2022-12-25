@@ -19,7 +19,7 @@ const CreateCourse = ({
 		name: '',
 	});
 
-	const [allAuthors, setAllAuthors] = useState(mockedAuthorsList);
+	const [allAuthors, setAllAuthors] = useState(authors);
 
 	const handleAddFormChange = (event) => {
 		event.preventDefault();
@@ -216,7 +216,7 @@ const CreateCourse = ({
 					<Input
 						placeholderText='Enter duration in minutes...'
 						type='number'
-						min='0'
+						min='1'
 						lableText='Duration'
 						name='duration'
 						onChange={handleAddDurationChange}
