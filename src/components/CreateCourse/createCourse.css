@@ -65,7 +65,7 @@ h2{
     font-weight: bold;
 }
 
-.authors ul{
+ ul{
     list-style: none;
     display: flex;
     flex-direction: column;
@@ -74,14 +74,14 @@ h2{
     margin-top: 2rem;
 }
 
-.authors li{
+ li{
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-left: 10rem;
 }
 
-.authors li button{
+ li button{
     margin-right: 15rem;
 }
 

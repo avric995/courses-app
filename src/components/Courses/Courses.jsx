@@ -41,7 +41,14 @@ const Courses = () => {
 				</section>
 			) : (
 				<section className='container-add'>
-					<CreateCourse authors={authors} />
+					<CreateCourse
+						authors={authors}
+						setAuthors={setAuthors}
+						courses={courses}
+						setCourses={setCourses}
+						isShown={isShown}
+						setIsShown={setIsShown}
+					/>
 					<button onClick={handleClick}>Revert</button>
 				</section>
 			)}

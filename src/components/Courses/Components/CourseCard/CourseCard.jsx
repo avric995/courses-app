@@ -4,6 +4,7 @@ import Button from '../../../../common/Button/Button';
 import time_convert from '../../../../helpers/pripeDuration';
 import formatDate from '../../../../helpers/formatDate';
 import findAutor from '../../../../helpers/findAuthors';
+import { mockedAuthorsList } from '../../../../constants';
 
 const CourseCard = ({
 	title,
@@ -13,6 +14,8 @@ const CourseCard = ({
 	authors,
 	authorsList,
 }) => {
+	// console.log(authors);
+	// console.log(authorsList);
 	return (
 		<>
 			<article className='course'>
@@ -24,13 +27,13 @@ const CourseCard = ({
 					{/* spread operator <h4>Authors: {...authors}</h4> */}
 					<h4>
 						Author:
-						<span>{`${findAutor(authorsList, authors).substring(
+						<span>{`${findAutor(mockedAuthorsList, authors).substring(
 							0,
 							25
 						)}...`}</span>
 					</h4>
 					<h4>
-						Duration: <span>{time_convert(duration)}</span>
+						Duration: <span>{time_convert(duration)} hours</span>
 					</h4>
 					<h4>
 						Created: <span> {formatDate(creationDate)} </span>
