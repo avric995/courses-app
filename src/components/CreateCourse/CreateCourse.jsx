@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import './createCourse.css';
 import Input from '../../common/Input/Input';
 import Button from '../../common/Button/Button';
@@ -51,7 +52,7 @@ const CreateCourse = ({
 			alert('Must contain 2 or more char');
 		} else {
 			const newAuthor = {
-				id: Math.random() + '',
+				id: uuidv4(),
 				name: name,
 			};
 
@@ -135,7 +136,7 @@ const CreateCourse = ({
 		const formattedToday = dd + '/' + mm + '/' + yyyy;
 
 		const newCourse = {
-			id: Math.random() + '',
+			id: uuidv4(),
 			title: addCourse.title,
 			description: addCourse.description,
 			creationDate: formattedToday,
