@@ -1,4 +1,3 @@
-import React from 'react';
 import './input.css';
 
 const Input = ({
@@ -9,21 +8,20 @@ const Input = ({
 	type,
 	min,
 	className,
-}) => {
-	return (
-		<div className='input-div'>
-			<label htmlFor='text'>{lableText}</label>
-			<input
-				type={type}
-				placeholder={placeholderText}
-				min={min}
-				name={name}
-				id='text'
-				onChange={onChange}
-				className={className}
-			/>
-		</div>
-	);
-};
+	id,
+}) => (
+	<div className='input-div'>
+		<label htmlFor={id}>{lableText}</label>
+		<input
+			type={type}
+			placeholder={placeholderText}
+			min={min}
+			name={name}
+			id={id}
+			onChange={onChange}
+			className={className}
+		/>
+	</div>
+);
 
 export default Input;

@@ -1,4 +1,4 @@
-export default function time_convert(num) {
+export default function timeConvert(num) {
 	const hours = Math.floor(num / 60)
 		.toString()
 		.padStart(2, '0');

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import CourseCard from './Components/CourseCard/CourseCard';
 import { mockedCoursesList, mockedAuthorsList } from '../../constants.js';
 import './courses.css';
@@ -9,7 +9,6 @@ import CreateCourse from '../CreateCourse/CreateCourse';
 const Courses = () => {
 	const [courses, setCourses] = useState(mockedCoursesList);
 	const [authors, setAuthors] = useState(mockedAuthorsList);
-	console.log(authors);
 	const [query, setQuery] = useState('');
 	const [isShown, setIsShown] = useState(false);
 

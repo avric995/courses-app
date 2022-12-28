@@ -1,10 +1,8 @@
-import React from 'react';
 import './courseCard.css';
 import Button from '../../../../common/Button/Button';
-import time_convert from '../../../../helpers/pripeDuration';
+import timeConvert from '../../../../helpers/pripeDuration';
 import formatDate from '../../../../helpers/formatDate';
 import findAutor from '../../../../helpers/findAuthors';
-// import { mockedAuthorsList } from '../../../../constants';
 
 const CourseCard = ({
 	title,
@@ -22,7 +20,6 @@ const CourseCard = ({
 					<p>{description}</p>
 				</div>
 				<div className='flex-2'>
-					{/* spread operator <h4>Authors: {...authors}</h4> */}
 					<h4>
 						Author:
 						<span>{`${findAutor(authorsList, authors).substring(
@@ -31,7 +28,7 @@ const CourseCard = ({
 						)}...`}</span>
 					</h4>
 					<h4>
-						Duration: <span>{time_convert(duration)} hours</span>
+						Duration: <span>{timeConvert(duration)} hours</span>
 					</h4>
 					<h4>
 						Created: <span> {formatDate(creationDate)} </span>

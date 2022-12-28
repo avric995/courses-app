@@ -1,4 +1,3 @@
-import React from 'react';
 import Input from '../../../../common/Input/Input';
 import Button from '../../../../common/Button/Button';
 import './searchBar.css';
@@ -10,20 +9,13 @@ const SearchBar = ({
 	query,
 	setCourses,
 }) => {
-	// const coursesFilter = data;
-
-	const handleSearchClick = (searchTerm) => {
+	const handleSearchClick = (query) => {
 		if (query !== '') {
-			const filteredCourse = coursesFilter.filter((course) => {
-				if (query === '') {
-					return course;
-				} else if (
+			const filteredCourse = coursesFilter.filter(
+				(course) =>
 					course.title.toLowerCase().includes(query.toLowerCase()) ||
 					course.id.toLowerCase().includes(query.toLowerCase())
-				) {
-					return course;
-				}
-			});
+			);
 			setCourses(filteredCourse);
 		} else {
 			setCourses(coursesFilter);

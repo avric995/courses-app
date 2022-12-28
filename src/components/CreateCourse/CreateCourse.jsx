@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import './createCourse.css';
 import Input from '../../common/Input/Input';
 import Button from '../../common/Button/Button';
-import time_convert from '../../helpers/pripeDuration';
-// import { mockedAuthorsList } from '../../constants';
+import timeConvert from '../../helpers/pripeDuration';
 
 const CreateCourse = ({
 	authors,
@@ -13,12 +12,22 @@ const CreateCourse = ({
 	isShown,
 	setIsShown,
 }) => {
-	// Add Author
 	const [addAuthor, setAddAuthor] = useState({
 		name: '',
 	});
-
 	const [allAuthors, setAllAuthors] = useState(authors);
+
+	const [duration, setDuration] = useState(0);
+
+	const [courseAuthorIds, setCourseAuthorIds] = useState([]);
+	const [courseAuthorsList, setCourseAuthorsList] = useState([]);
+
+	const [addCourse, setAddCourse] = useState({
+		title: '',
+		description: '',
+	});
+
+	// Add Author
 
 	const handleAddFormChange = (event) => {
 		event.preventDefault();
@@ -47,23 +56,19 @@ const CreateCourse = ({
 			};
 
 			const newAuthors = [...authors, newAuthor];
-			setAllAuthors([...allAuthors, newAuthor]);
+			setAllAuthors((prevState) => [...prevState, newAuthor]);
 			setAuthors(newAuthors);
 		}
 
 		const inputField = document.querySelector('.input-author');
-		console.log(inputField);
+
 		inputField.value = '';
 	};
-	console.log(allAuthors);
 
 	// Add duration
-	const [duration, setDuration] = useState(0);
 
 	const handleAddDurationChange = (event) => {
 		event.preventDefault();
-
-		// const fieldName = event.target.getAttribute('duration');
 
 		const fieldValue = event.target.value;
 
@@ -71,8 +76,6 @@ const CreateCourse = ({
 	};
 
 	// add course author
-	const [courseAuthorIds, setCourseAuthorIds] = useState([]);
-	const [courseAuthorsList, setCourseAuthorsList] = useState([]);
 
 	const addCourseAut = (id) => {
 		const newAuthors = authors.filter((autor) => autor.id !== id);
@@ -97,20 +100,14 @@ const CreateCourse = ({
 		const deletedCourseAuthor = courseAuthorsList.filter(
 			(author) => author.id === id
 		);
-		setAuthors([...authors, ...deletedCourseAuthor]);
+		setAuthors((prevState) => [...prevState, ...deletedCourseAuthor]);
 
-		setCourseAuthorIds(courseAuthorIds.filter((authorId) => authorId !== id));
+		setCourseAuthorIds((prevState) =>
+			prevState.filter((authorId) => authorId !== id)
+		);
 	};
 
-	// logging id-s
-	// console.log(courseAuthorIds);
-
 	// add course
-
-	const [addCourse, setAddCourse] = useState({
-		title: '',
-		description: '',
-	});
 
 	const handleAddCourseFormChange = (event) => {
 		event.preventDefault();
@@ -160,7 +157,6 @@ const CreateCourse = ({
 			setAuthors(allAuthors);
 			setIsShown(!isShown);
 		}
-		// console.log(newCourses);
 	};
 
 	return (
@@ -171,6 +167,7 @@ const CreateCourse = ({
 					type='text'
 					lableText='Title'
 					name='title'
+					id='title'
 					onChange={handleAddCourseFormChange}
 				/>
 				<Button value='Add Course' type='submit' />
@@ -191,6 +188,7 @@ const CreateCourse = ({
 					<Input
 						placeholderText='Input author name...'
 						lableText='Author name'
+						id='authName'
 						name='name'
 						type='text'
 						min='2'
@@ -220,13 +218,14 @@ const CreateCourse = ({
 					<Input
 						placeholderText='Enter duration in minutes...'
 						type='number'
+						id='duration'
 						min='1'
 						lableText='Duration'
 						name='duration'
 						onChange={handleAddDurationChange}
 					/>
 					<p>
-						Duration: <span>{time_convert(duration)}</span> hours
+						Duration: <span>{timeConvert(duration)}</span> hours
 					</p>
 				</div>
 				<div className='course-authors'>

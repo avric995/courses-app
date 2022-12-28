@@ -1,4 +1,3 @@
-import React from 'react';
 import './header.css';
 import Button from '../../common/Button/Button';
 import { Logo } from './components/Logo/Logo';
