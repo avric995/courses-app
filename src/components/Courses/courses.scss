@@ -6,11 +6,13 @@
 .section-element{
     display: flex;
     justify-content: space-between;
-}
 
-.section-element button {
+     button {
     align-self: flex-end;
 }
+}
+
+
 
 .container-add{
     border: 1px solid green;
