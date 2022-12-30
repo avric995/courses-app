@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import './createCourse.css';
+import './createCourse.scss';
 import Input from '../../common/Input/Input';
 import Button from '../../common/Button/Button';
 import timeConvert from '../../helpers/pripeDuration';
@@ -20,7 +20,7 @@ const CreateCourse = ({
 
 	const [duration, setDuration] = useState(0);
 
-	const [courseAuthorIds, setCourseAuthorIds] = useState([]);
+	// const [courseAuthorIds, setCourseAuthorIds] = useState([]);
 	const [courseAuthorsList, setCourseAuthorsList] = useState([]);
 
 	const [addCourse, setAddCourse] = useState({
@@ -86,8 +86,8 @@ const CreateCourse = ({
 		const courseAuthorList = [...courseAuthorsList, ...courseAuthorNew];
 		setCourseAuthorsList(courseAuthorList);
 
-		const courseAuthorsId = [...courseAuthorIds, id];
-		setCourseAuthorIds(courseAuthorsId);
+		// const courseAuthorsId = [...courseAuthorIds, id];
+		// setCourseAuthorIds(courseAuthorsId);
 	};
 
 	//remove course author
@@ -103,9 +103,9 @@ const CreateCourse = ({
 		);
 		setAuthors((prevState) => [...prevState, ...deletedCourseAuthor]);
 
-		setCourseAuthorIds((prevState) =>
-			prevState.filter((authorId) => authorId !== id)
-		);
+		// setCourseAuthorIds((prevState) =>
+		// 	prevState.filter((authorId) => authorId !== id)
+		// );
 	};
 
 	// add course
@@ -141,8 +141,14 @@ const CreateCourse = ({
 			description: addCourse.description,
 			creationDate: formattedToday,
 			duration: duration,
-			authors: courseAuthorIds.length === 0 ? [] : courseAuthorIds,
+			authors:
+				courseAuthorsList.length === 0
+					? []
+					: courseAuthorsList.map((item) => item.id),
 		};
+		// console.log(newCourse.authors);
+		// console.log(newCourse.authors2);
+		// authors: courseAuthorIds.length === 0 ? [] : courseAuthorIds,
 
 		if (
 			newCourse.title === '' ||

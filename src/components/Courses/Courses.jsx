@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import CourseCard from './Components/CourseCard/CourseCard';
 import { mockedCoursesList, mockedAuthorsList } from '../../constants.js';
-import './courses.css';
+import './courses.scss';
 import SearchBar from './Components/SearchBar/SearchBar';
 import Button from '../../common/Button/Button';
 import CreateCourse from '../CreateCourse/CreateCourse';
