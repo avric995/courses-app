@@ -1,4 +1,4 @@
-import './courseCard.css';
+import './courseCard.scss';
 import Button from '../../../../common/Button/Button';
 import timeConvert from '../../../../helpers/pripeDuration';
 import formatDate from '../../../../helpers/formatDate';
