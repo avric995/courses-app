@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import './courseCard.scss';
 import Button from '../../../../common/Button/Button';
 import timeConvert from '../../../../helpers/pripeDuration';
@@ -5,6 +6,7 @@ import formatDate from '../../../../helpers/formatDate';
 import findAutor from '../../../../helpers/findAuthors';
 
 const CourseCard = ({
+	id,
 	title,
 	description,
 	creationDate,
@@ -33,7 +35,9 @@ const CourseCard = ({
 					<h4>
 						Created: <span> {formatDate(creationDate)} </span>
 					</h4>
-					<Button value='Show course' />
+					<Link to={`${id}`}>
+						<Button value='Show course' />
+					</Link>
 				</div>
 			</article>
 		</>

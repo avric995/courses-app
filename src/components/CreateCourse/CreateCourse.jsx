@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import './createCourse.scss';
 import Input from '../../common/Input/Input';
@@ -6,13 +7,16 @@ import Button from '../../common/Button/Button';
 import timeConvert from '../../helpers/pripeDuration';
 
 const CreateCourse = ({
-	authors,
 	setAuthors,
-	courses,
+
 	setCourses,
 	isShown,
 	setIsShown,
 }) => {
+	const { state } = useLocation();
+	console.log(state);
+	const { courses, authors } = state;
+
 	const [addAuthor, setAddAuthor] = useState({
 		name: '',
 	});
@@ -167,92 +171,94 @@ const CreateCourse = ({
 	};
 
 	return (
-		<form onSubmit={handleAddCourseFormSubmit}>
-			<div className='header-div'>
-				<Input
-					placeholderText='Enter title...'
-					type='text'
-					lableText='Title'
-					name='title'
-					id='title'
-					onChange={handleAddCourseFormChange}
-				/>
-				<Button value='Add Course' type='submit' />
-			</div>
-			<label htmlFor='desc'>Description</label>
-			<textarea
-				name='description'
-				id='desc'
-				cols='200'
-				rows='10'
-				minLength='2'
-				placeholder='Enter description'
-				onChange={handleAddCourseFormChange}
-			></textarea>
-			<div className='add-div'>
-				<div className='add-author'>
-					<h2>Add Author</h2>
+		<section className='container-add'>
+			<form onSubmit={handleAddCourseFormSubmit}>
+				<div className='header-div'>
 					<Input
-						placeholderText='Input author name...'
-						lableText='Author name'
-						id='authName'
-						name='name'
+						placeholderText='Enter title...'
 						type='text'
-						min='2'
-						onChange={handleAddFormChange}
-						className='input-author'
+						lableText='Title'
+						name='title'
+						id='title'
+						onChange={handleAddCourseFormChange}
 					/>
-					<Button value='Create Author' onClick={handleAddFormSubmit} />
+					<Button value='Add Course' type='submit' />
 				</div>
-				<div className='authors'>
-					<h2>Authors</h2>
-					<ul>
-						{authors.map((author) => {
-							return (
-								<li key={author.id}>
-									{author.name}
-									<Button
-										value='Add Author'
-										onClick={() => addCourseAut(author.id)}
-									/>
-								</li>
-							);
-						})}
-					</ul>
+				<label htmlFor='desc'>Description</label>
+				<textarea
+					name='description'
+					id='desc'
+					cols='200'
+					rows='10'
+					minLength='2'
+					placeholder='Enter description'
+					onChange={handleAddCourseFormChange}
+				></textarea>
+				<div className='add-div'>
+					<div className='add-author'>
+						<h2>Add Author</h2>
+						<Input
+							placeholderText='Input author name...'
+							lableText='Author name'
+							id='authName'
+							name='name'
+							type='text'
+							min='2'
+							onChange={handleAddFormChange}
+							className='input-author'
+						/>
+						<Button value='Create Author' onClick={handleAddFormSubmit} />
+					</div>
+					<div className='authors'>
+						<h2>Authors</h2>
+						<ul>
+							{authors.map((author) => {
+								return (
+									<li key={author.id}>
+										{author.name}
+										<Button
+											value='Add Author'
+											onClick={() => addCourseAut(author.id)}
+										/>
+									</li>
+								);
+							})}
+						</ul>
+					</div>
+					<div className='duration'>
+						<h2>Duration</h2>
+						<Input
+							placeholderText='Enter duration in minutes...'
+							type='number'
+							id='duration'
+							min='1'
+							lableText='Duration'
+							name='duration'
+							onChange={handleAddDurationChange}
+						/>
+						<p>
+							Duration: <span>{timeConvert(duration)}</span> hours
+						</p>
+					</div>
+					<div className='course-authors'>
+						<h2>Course Authors</h2>
+						<ul>
+							{courseAuthorsList.map((author) => {
+								return (
+									<li key={author.id}>
+										{author.name}
+										<Button
+											value='Remove Author'
+											onClick={() => removeCourseAut(author.id)}
+										/>
+									</li>
+								);
+							})}
+						</ul>
+					</div>
 				</div>
-				<div className='duration'>
-					<h2>Duration</h2>
-					<Input
-						placeholderText='Enter duration in minutes...'
-						type='number'
-						id='duration'
-						min='1'
-						lableText='Duration'
-						name='duration'
-						onChange={handleAddDurationChange}
-					/>
-					<p>
-						Duration: <span>{timeConvert(duration)}</span> hours
-					</p>
-				</div>
-				<div className='course-authors'>
-					<h2>Course Authors</h2>
-					<ul>
-						{courseAuthorsList.map((author) => {
-							return (
-								<li key={author.id}>
-									{author.name}
-									<Button
-										value='Remove Author'
-										onClick={() => removeCourseAut(author.id)}
-									/>
-								</li>
-							);
-						})}
-					</ul>
-				</div>
-			</div>
-		</form>
+			</form>
+		</section>
 	);
 };
 

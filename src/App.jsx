@@ -13,8 +13,11 @@ function App() {
 				<Route path='/' element={<Header />}>
 					<Route path='registration' element={<Registration />} />
 					<Route path='login' element={<Login />} />
-					<Route path='courses' element={<Courses />} />
-					<Route path='courses/add' element={<CreateCourse />} />
+					<Route path='courses'>
+						<Route index element={<Courses />} />
+						<Route path='add' element={<CreateCourse />} />
+						<Route path=':courseId' element={<CourseInfo />} />
+					</Route>
 				</Route>
 
 				{/* <Header /> */}
