@@ -1,21 +1,16 @@
 import { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import './createCourse.scss';
 import Input from '../../common/Input/Input';
 import Button from '../../common/Button/Button';
 import timeConvert from '../../helpers/pripeDuration';
+import { useCourseContext } from '../../context/coursesContext';
 
-const CreateCourse = ({
-	setAuthors,
-
-	setCourses,
-	isShown,
-	setIsShown,
-}) => {
-	const { state } = useLocation();
-	console.log(state);
-	const { courses, authors } = state;
+const CreateCourse = () => {
+	const navigate = useNavigate();
+	const context = useCourseContext();
+	const { courses, authors, setCourses, setAuthors } = context;
 
 	const [addAuthor, setAddAuthor] = useState({
 		name: '',
@@ -24,7 +19,6 @@ const CreateCourse = ({
 
 	const [duration, setDuration] = useState(0);
 
-	// const [courseAuthorIds, setCourseAuthorIds] = useState([]);
 	const [courseAuthorsList, setCourseAuthorsList] = useState([]);
 
 	const [addCourse, setAddCourse] = useState({
@@ -166,7 +160,8 @@ const CreateCourse = ({
 			const newCourses = [...courses, newCourse];
 			setCourses(newCourses);
 			setAuthors(allAuthors);
-			setIsShown(!isShown);
+			// setIsShown(!isShown);
+			navigate('/courses');
 		}
 	};
 

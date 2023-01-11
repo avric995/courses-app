@@ -1,17 +1,16 @@
 import './courseInfo.scss';
 import { useParams, Link } from 'react-router-dom';
-import { mockedCoursesList, mockedAuthorsList } from '../../constants.js';
 import findAutor from '../../helpers/findAuthors';
 import timeConvert from '../../helpers/pripeDuration';
 import formatDate from '../../helpers/formatDate';
+import { useCourseContext } from '../../context/coursesContext';
 
 const CourseInfo = () => {
+	const context = useCourseContext();
+	const { courses, authors } = context;
 	const { courseId } = useParams();
-	// console.log(courseId);
 
-	const selectedCourseInfo = mockedCoursesList.find(
-		(course) => course.id === courseId
-	);
+	const selectedCourseInfo = courses.find((course) => course.id === courseId);
 
 	return (
 		<section className='course-info-section'>
@@ -37,10 +36,7 @@ const CourseInfo = () => {
 					</h4>
 					<h4>
 						Author:
-						<span>
-							{' '}
-							{findAutor(mockedAuthorsList, selectedCourseInfo.authors)}
-						</span>
+						<span> {findAutor(authors, selectedCourseInfo.authors)}</span>
 					</h4>
 				</div>
 			</div>
