@@ -1,0 +1,27 @@
+.input-div{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    
+}
+
+   input{
+    border: 1px solid rgb(179, 179, 0);
+    font-size: 1.6rem;
+    padding: 0.5rem 2rem;
+    outline: none;
+    
+
+    }
+
+
+input::placeholder {
+    
+    color: lightgray;
+    opacity: 1;
+}
+
+label {
+    color: rgb(83, 83, 83);
+    font-size: 1.6rem;
+}
