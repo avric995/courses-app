@@ -1,0 +1,19 @@
+.error-section {
+     border: 2px solid red;
+    padding: 2rem;
+    margin-top: 2rem;
+}
+
+.container{
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    width: 20rem;
+    gap: 2rem;
+    align-items: center;
+
+    p{
+        font-size: 18px;
+    }
+
+}

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Button from '../../common/Button/Button';
 import Input from '../../common/Input/Input';
 import './login.scss';
-// import { useCourseContext } from '../../context/coursesContext';
+import { useLoginContext } from '../../context/loginContext';
 import { useNavigate } from 'react-router-dom';
 
 import axios from '../../api/axios';
@@ -13,9 +13,8 @@ const Registration = () => {
 	const navigate = useNavigate();
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
-	const [name, setName] = useState('');
 
-	// const { auth, setAuth } = useCourseContext();
+	const { setLogedUser } = useLoginContext();
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -29,12 +28,18 @@ const Registration = () => {
 				}
 			);
 			// console.log(JSON.stringify(response?.data));
-			setName(response?.data.user.name);
-			const result = response?.data.result.split(' ');
-			const token = result[1];
+			const nameString = response?.data.user.name;
+			// setName(nameString);
+			const [barrer, token] = response?.data.result.split(' ');
 			localStorage.setItem('token', token);
 			if (localStorage.getItem('token')) {
+				setLogedUser({
+					name: nameString,
+					token: localStorage.getItem('token'),
+				});
 				navigate('/courses');
+			} else if (!localStorage.getItem('token')) {
+				localStorage.setItem('token', token);
 			}
 		} catch (error) {
 			if (!error?.response) {
