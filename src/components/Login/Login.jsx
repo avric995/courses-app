@@ -1,19 +1,62 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Button from '../../common/Button/Button';
 import Input from '../../common/Input/Input';
 import './login.scss';
+// import { useCourseContext } from '../../context/coursesContext';
+import { useNavigate } from 'react-router-dom';
+
+import axios from '../../api/axios';
+const LOGIN_URL = '/login';
 
 const Registration = () => {
+	const navigate = useNavigate();
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
+	const [name, setName] = useState('');
+
+	// const { auth, setAuth } = useCourseContext();
+
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+
+		try {
+			const response = await axios.post(
+				LOGIN_URL,
+				JSON.stringify({ email, password }),
+				{
+					headers: { 'Content-Type': 'application/json' },
+				}
+			);
+			// console.log(JSON.stringify(response?.data));
+			setName(response?.data.user.name);
+			const result = response?.data.result.split(' ');
+			const token = result[1];
+			localStorage.setItem('token', token);
+			if (localStorage.getItem('token')) {
+				navigate('/courses');
+			}
+		} catch (error) {
+			if (!error?.response) {
+				alert('No Server Response');
+			} else if (error.response?.status === 400) {
+				alert(error.response?.data.result);
+			}
+		}
+	};
 	return (
 		<section className='login-section'>
-			<form className='login-form'>
+			<form className='login-form' onSubmit={handleSubmit}>
 				<h2 className='reg-title'>Login</h2>
 				<Input
 					placeholderText='Enter email'
-					type='text'
+					type='email'
 					lableText='Email'
 					name='email'
 					id='email'
+					required={true}
+					onChange={(e) => setEmail(e.target.value)}
+					value={email}
 				/>
 				<Input
 					placeholderText='Enter password'
@@ -21,6 +64,9 @@ const Registration = () => {
 					lableText='Password'
 					name='password'
 					id='password'
+					required={true}
+					onChange={(e) => setPassword(e.target.value)}
+					value={password}
 				/>
 				<Button type='submit' value='Login' />
 				<p>
