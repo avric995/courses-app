@@ -1,4 +1,4 @@
-import './header.css';
+import './header.scss';
 import { Outlet } from 'react-router-dom';
 import Button from '../../common/Button/Button';
 import { Logo } from './components/Logo/Logo';
@@ -8,6 +8,7 @@ const Header = () => {
 	const { logedUser, setLogedUser } = useLoginContext();
 	const logout = () => {
 		setLogedUser({});
+		localStorage.clear('token');
 	};
 	return (
 		<>

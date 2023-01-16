@@ -27,9 +27,9 @@ const Registration = () => {
 					headers: { 'Content-Type': 'application/json' },
 				}
 			);
-			// console.log(JSON.stringify(response?.data));
+
 			const nameString = response?.data.user.name;
-			// setName(nameString);
+
 			const [barrer, token] = response?.data.result.split(' ');
 			localStorage.setItem('token', token);
 			if (localStorage.getItem('token')) {

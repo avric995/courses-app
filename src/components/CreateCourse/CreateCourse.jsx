@@ -83,9 +83,6 @@ const CreateCourse = () => {
 		const courseAuthorNew = authors.filter((author) => author.id === id);
 		const courseAuthorList = [...courseAuthorsList, ...courseAuthorNew];
 		setCourseAuthorsList(courseAuthorList);
-
-		// const courseAuthorsId = [...courseAuthorIds, id];
-		// setCourseAuthorIds(courseAuthorsId);
 	};
 
 	//remove course author
@@ -100,10 +97,6 @@ const CreateCourse = () => {
 			(author) => author.id === id
 		);
 		setAuthors((prevState) => [...prevState, ...deletedCourseAuthor]);
-
-		// setCourseAuthorIds((prevState) =>
-		// 	prevState.filter((authorId) => authorId !== id)
-		// );
 	};
 
 	// add course
@@ -144,9 +137,6 @@ const CreateCourse = () => {
 					? []
 					: courseAuthorsList.map((item) => item.id),
 		};
-		// console.log(newCourse.authors);
-		// console.log(newCourse.authors2);
-		// authors: courseAuthorIds.length === 0 ? [] : courseAuthorIds,
 
 		if (
 			newCourse.title === '' ||
@@ -160,7 +150,6 @@ const CreateCourse = () => {
 			const newCourses = [...courses, newCourse];
 			setCourses(newCourses);
 			setAuthors(allAuthors);
-			// setIsShown(!isShown);
 			navigate('/courses');
 		}
 	};

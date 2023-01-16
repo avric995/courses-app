@@ -1,6 +1,6 @@
 import Input from '../../../../common/Input/Input';
 import Button from '../../../../common/Button/Button';
-import './searchBar.css';
+import './searchBar.scss';
 
 const SearchBar = ({
 	placeholderText,

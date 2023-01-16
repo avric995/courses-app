@@ -16,38 +16,19 @@ const Registration = () => {
 	const navigate = useNavigate();
 	const newUser = { name, email, password };
 
-	// async function postData(
-	// 	url = 'http://localhost:4000/register',
-	// 	data = newUser
-	// ) {
-	// 	const response = await fetch('http://localhost:4000/register', {
-	// 		method: 'POST',
-	// 		body: JSON.stringify(newUser),
-	// 		headers: {
-	// 			'Content-Type': 'application/json',
-	// 		},
-	// 	});
-	// 	const result = await response.json();
-	// 	console.log(JSON.stringify(result));
-	// }
-
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		// postData();
-
 		try {
 			const response = await axios.post(REGISTER_URL, JSON.stringify(newUser), {
 				headers: { 'Content-Type': 'application/json' },
 			});
 
-			console.log(response.data);
-			console.log(JSON.stringify(response));
-			navigate('login');
+			navigate('/login');
 		} catch (error) {
 			if (!error.response) {
 				alert('No Server Response');
 			} else if (error.response?.status === 400) {
-				alert('Username taken');
+				alert('Invalid data');
 			} else {
 				alert('Registration Failed');
 			}

@@ -11,8 +11,6 @@ const Courses = () => {
 	const context = useCourseContext();
 	const { courses, authors, setCourses } = context;
 
-	console.log(courses);
-
 	const [query, setQuery] = useState('');
 
 	return (

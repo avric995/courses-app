@@ -6,7 +6,6 @@ const CourseContext = createContext();
 export const CourseProvider = ({ children }) => {
 	const [courses, setCourses] = useState(mockedCoursesList);
 	const [authors, setAuthors] = useState(mockedAuthorsList);
-	const [userName, setUserName] = useState('');
 
 	return (
 		<CourseContext.Provider
@@ -15,8 +14,6 @@ export const CourseProvider = ({ children }) => {
 				authors,
 				setCourses,
 				setAuthors,
-				userName,
-				setUserName,
 			}}
 		>
 			{children}

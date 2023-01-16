@@ -27,10 +27,23 @@ function App() {
 									<Courses />
 								</ProtectedRoute>
 							}
-						>
-							<Route path='add' element={<CreateCourse />} />
-							<Route path=':courseId' element={<CourseInfo />} />
-						</Route>
+						></Route>
+						<Route
+							path='courses/add'
+							element={
+								<ProtectedRoute>
+									<CreateCourse />
+								</ProtectedRoute>
+							}
+						/>
+						<Route
+							path='courses/:courseId'
+							element={
+								<ProtectedRoute>
+									<CourseInfo />
+								</ProtectedRoute>
+							}
+						/>
 
 						<Route path='*' element={<Error />} />
 					</Routes>
