@@ -7,7 +7,7 @@ import { useLoginContext } from '../../context/loginContext';
 import { useNavigate } from 'react-router-dom';
 
 import axios from '../../api/axios';
-const LOGIN_URL = '/login';
+import { routes } from '../../constants';
 
 const Registration = () => {
 	const navigate = useNavigate();
@@ -21,7 +21,7 @@ const Registration = () => {
 
 		try {
 			const response = await axios.post(
-				LOGIN_URL,
+				routes.login,
 				JSON.stringify({ email, password }),
 				{
 					headers: { 'Content-Type': 'application/json' },

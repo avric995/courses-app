@@ -4,13 +4,19 @@ import findAutor from '../../helpers/findAuthors';
 import timeConvert from '../../helpers/pripeDuration';
 import formatDate from '../../helpers/formatDate';
 import { useCourseContext } from '../../context/coursesContext';
+import { useSelector } from 'react-redux';
+import { selectCourseById } from '../Courses/coursesSlice';
 
 const CourseInfo = () => {
 	const context = useCourseContext();
-	const { courses, authors } = context;
+	const { authors } = context;
 	const { courseId } = useParams();
 
-	const selectedCourseInfo = courses.find((course) => course.id === courseId);
+	const selectedCourseInfo = useSelector((state) =>
+		selectCourseById(state, courseId)
+	);
+
+	// const selectedCourseInfo = courses.find((course) => course.id === courseId);
 
 	return (
 		<section className='course-info-section'>
