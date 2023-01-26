@@ -1,9 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from '../../api/axios';
 import { routes } from '../../constants';
-// import axios from 'axios';
-
-const COURSES_URL = 'http://localhost:4000/courses/all';
 
 const initialState = {
 	courses: [],

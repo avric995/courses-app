@@ -3,13 +3,16 @@ import { useParams, Link } from 'react-router-dom';
 import findAutor from '../../helpers/findAuthors';
 import timeConvert from '../../helpers/pripeDuration';
 import formatDate from '../../helpers/formatDate';
-import { useCourseContext } from '../../context/coursesContext';
+// import { useCourseContext } from '../../context/coursesContext';
 import { useSelector } from 'react-redux';
 import { selectCourseById } from '../Courses/coursesSlice';
+import { selectAllAuthors } from '../../features/authors/authorsSlice';
 
 const CourseInfo = () => {
-	const context = useCourseContext();
-	const { authors } = context;
+	// const context = useCourseContext();
+	// const { authors } = context;
+
+	const authors = useSelector(selectAllAuthors);
 	const { courseId } = useParams();
 
 	const selectedCourseInfo = useSelector((state) =>

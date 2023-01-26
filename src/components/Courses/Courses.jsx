@@ -14,6 +14,11 @@ import {
 	fetchCourses,
 } from './coursesSlice';
 
+import {
+	selectAllAuthors,
+	fetchAuthors,
+} from '../../features/authors/authorsSlice';
+
 const Courses = () => {
 	const context = useCourseContext();
 	// const { courses, authors, setCourses } = context;
@@ -22,14 +27,18 @@ const Courses = () => {
 	const courses = useSelector(selectAllCourses);
 	const coursesStatus = useSelector(getCoursesStatus);
 	const error = useSelector(getCoursesError);
-	console.log(courses);
 
-	const { authors, setCourses } = context;
+	console.log(courses);
+	const authors = useSelector(selectAllAuthors);
+	console.log(authors);
+
+	const { setCourses } = context;
 
 	const [query, setQuery] = useState('');
 
 	useEffect(() => {
 		if (coursesStatus === 'idle') {
+			dispatch(fetchAuthors());
 			dispatch(fetchCourses());
 		}
 	}, [coursesStatus, dispatch]);
@@ -53,7 +62,7 @@ const Courses = () => {
 					<SearchBar
 						placeholderText='Enter course name or id...'
 						onChange={(event) => setQuery(event.target.value)}
-						coursesFilter={mockedCoursesList}
+						coursesFilter={courses}
 						setCourses={setCourses}
 						query={query}
 					/>
