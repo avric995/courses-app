@@ -8,6 +8,8 @@ const initialState = {
 	error: null,
 };
 
+console.log(initialState.courses);
+
 export const fetchCourses = createAsyncThunk(
 	'courses/fetchCourses',
 	async () => {
@@ -16,10 +18,22 @@ export const fetchCourses = createAsyncThunk(
 	}
 );
 
+export const addNewCourse = createAsyncThunk(
+	'courses/addNewCourse',
+	async (initialCourse) => {
+		const response = await axios.post(routes.addCourse, initialCourse);
+		return response.data;
+	}
+);
+
 const coursesSlice = createSlice({
 	name: 'courses',
 	initialState,
-	reducers: {},
+	reducers: {
+		courseAdded(state, action) {
+			state.courses.push(action.payload);
+		},
+	},
 	extraReducers(builder) {
 		builder
 			.addCase(fetchCourses.pending, (state, action) => {
@@ -32,6 +46,9 @@ const coursesSlice = createSlice({
 			.addCase(fetchCourses.rejected, (state, action) => {
 				state.status = 'failed';
 				state.error = action.error.message;
+			})
+			.addCase(addNewCourse.fulfilled, (state, action) => {
+				state.courses.push(action.payload);
 			});
 	},
 });
@@ -39,6 +56,8 @@ const coursesSlice = createSlice({
 export const selectAllCourses = (state) => state.courses.courses;
 export const getCoursesStatus = (state) => state.courses.status;
 export const getCoursesError = (state) => state.courses.error;
+
+export const { courseAdded } = coursesSlice.actions;
 
 export const selectCourseById = (state, courseId) =>
 	state.courses.courses.find((course) => course.id === courseId);

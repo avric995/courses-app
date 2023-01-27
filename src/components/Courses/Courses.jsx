@@ -28,17 +28,18 @@ const Courses = () => {
 	const coursesStatus = useSelector(getCoursesStatus);
 	const error = useSelector(getCoursesError);
 
-	console.log(courses);
 	const authors = useSelector(selectAllAuthors);
-	console.log(authors);
 
 	const { setCourses } = context;
 
 	const [query, setQuery] = useState('');
 
 	useEffect(() => {
+		dispatch(fetchAuthors());
+	}, []);
+
+	useEffect(() => {
 		if (coursesStatus === 'idle') {
-			dispatch(fetchAuthors());
 			dispatch(fetchCourses());
 		}
 	}, [coursesStatus, dispatch]);

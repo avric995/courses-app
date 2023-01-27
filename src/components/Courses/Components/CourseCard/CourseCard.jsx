@@ -4,6 +4,8 @@ import Button from '../../../../common/Button/Button';
 import timeConvert from '../../../../helpers/pripeDuration';
 import formatDate from '../../../../helpers/formatDate';
 import findAutor from '../../../../helpers/findAuthors';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
 
 const CourseCard = ({
 	id,
@@ -35,9 +37,13 @@ const CourseCard = ({
 					<h4>
 						Created: <span> {formatDate(creationDate)} </span>
 					</h4>
-					<Link to={`${id}`}>
-						<Button value='Show course' />
-					</Link>
+					<div className='buttons'>
+						<Link to={`${id}`}>
+							<Button value='Show course' />
+						</Link>
+						<Button value={<FontAwesomeIcon icon={faEdit} />} />
+						<Button value={<FontAwesomeIcon icon={faTrash} />} />
+					</div>
 				</div>
 			</article>
 		</>

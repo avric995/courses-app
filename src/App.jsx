@@ -13,42 +13,40 @@ import { LoginProvider } from './context/loginContext';
 function App() {
 	return (
 		<CourseProvider>
-			<LoginProvider>
-				<Header />
-				<BrowserRouter>
-					<Routes>
-						<Route path='/' element={<Navigate to='login' />}></Route>
-						<Route path='login' element={<Login />} />
-						<Route path='registration' element={<Registration />} />
-						<Route
-							path='courses'
-							element={
-								<ProtectedRoute>
-									<Courses />
-								</ProtectedRoute>
-							}
-						></Route>
-						<Route
-							path='courses/add'
-							element={
-								<ProtectedRoute>
-									<CreateCourse />
-								</ProtectedRoute>
-							}
-						/>
-						<Route
-							path='courses/:courseId'
-							element={
-								<ProtectedRoute>
-									<CourseInfo />
-								</ProtectedRoute>
-							}
-						/>
+			<Header />
+			<BrowserRouter>
+				<Routes>
+					<Route path='/' element={<Navigate to='login' />}></Route>
+					<Route path='login' element={<Login />} />
+					<Route path='registration' element={<Registration />} />
+					<Route
+						path='courses'
+						element={
+							<ProtectedRoute>
+								<Courses />
+							</ProtectedRoute>
+						}
+					></Route>
+					<Route
+						path='courses/add'
+						element={
+							<ProtectedRoute>
+								<CreateCourse />
+							</ProtectedRoute>
+						}
+					/>
+					<Route
+						path='courses/:courseId'
+						element={
+							<ProtectedRoute>
+								<CourseInfo />
+							</ProtectedRoute>
+						}
+					/>
 
-						<Route path='*' element={<Error />} />
-					</Routes>
-				</BrowserRouter>
-			</LoginProvider>
+					<Route path='*' element={<Error />} />
+				</Routes>
+			</BrowserRouter>
 		</CourseProvider>
 	);
 }

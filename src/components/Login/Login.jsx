@@ -8,13 +8,16 @@ import { useNavigate } from 'react-router-dom';
 
 import axios from '../../api/axios';
 import { routes } from '../../constants';
+import { useDispatch } from 'react-redux';
+import { login } from '../../features/user/userSlice';
 
-const Registration = () => {
+const Login = () => {
+	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 
-	const { setLogedUser } = useLoginContext();
+	// const { setLogedUser } = useLoginContext();
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -29,14 +32,24 @@ const Registration = () => {
 			);
 
 			const nameString = response?.data.user.name;
+			const emailString = response?.data.user.email;
 
 			const [barrer, token] = response?.data.result.split(' ');
 			localStorage.setItem('token', token);
 			if (localStorage.getItem('token')) {
-				setLogedUser({
-					name: nameString,
-					token: localStorage.getItem('token'),
-				});
+				// setLogedUser({
+				// 	name: nameString,
+				// 	token: localStorage.getItem('token'),
+				// });
+				dispatch(
+					login({
+						isAuth: true,
+						name: nameString,
+						email: emailString,
+						token: token,
+					})
+				);
+
 				navigate('/courses');
 			} else if (!localStorage.getItem('token')) {
 				localStorage.setItem('token', token);
@@ -75,7 +88,7 @@ const Registration = () => {
 				/>
 				<Button type='submit' value='Login' />
 				<p>
-					If you don't have an account you can{' '}
+					If you don't have an account you can
 					<Link to='/registration'>Register</Link>
 				</p>
 			</form>
@@ -83,4 +96,4 @@ const Registration = () => {
 	);
 };
 
-export default Registration;
+export default Login;

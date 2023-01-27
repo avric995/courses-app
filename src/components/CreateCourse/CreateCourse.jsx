@@ -6,11 +6,17 @@ import Input from '../../common/Input/Input';
 import Button from '../../common/Button/Button';
 import timeConvert from '../../helpers/pripeDuration';
 import { useCourseContext } from '../../context/coursesContext';
+import { courseAdded } from '../Courses/coursesSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectAllAuthors } from '../../features/authors/authorsSlice';
 
 const CreateCourse = () => {
+	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const context = useCourseContext();
-	const { courses, authors, setCourses, setAuthors } = context;
+	// const { courses, authors, setCourses, setAuthors } = context;
+	const { setAuthors } = context;
+	const authors = useSelector(selectAllAuthors);
 
 	const [addAuthor, setAddAuthor] = useState({
 		name: '',
@@ -77,10 +83,10 @@ const CreateCourse = () => {
 	// add course author
 
 	const addCourseAut = (id) => {
-		const newAuthors = authors.filter((autor) => autor.id !== id);
-		setAuthors(newAuthors);
+		const newAuthors = allAuthors.filter((autor) => autor.id !== id);
+		setAllAuthors(newAuthors);
 
-		const courseAuthorNew = authors.filter((author) => author.id === id);
+		const courseAuthorNew = allAuthors.filter((author) => author.id === id);
 		const courseAuthorList = [...courseAuthorsList, ...courseAuthorNew];
 		setCourseAuthorsList(courseAuthorList);
 	};
@@ -147,8 +153,9 @@ const CreateCourse = () => {
 		} else if (newCourse.authors.length === 0) {
 			alert('Please select authors');
 		} else {
-			const newCourses = [...courses, newCourse];
-			setCourses(newCourses);
+			// const newCourses = [...courses, newCourse];
+			// setCourses(newCourses);
+			dispatch(courseAdded(newCourse));
 			setAuthors(allAuthors);
 			navigate('/courses');
 		}

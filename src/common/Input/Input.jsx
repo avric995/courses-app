@@ -10,6 +10,7 @@ const Input = ({
 	className,
 	id,
 	required,
+	value,
 }) => (
 	<div className='input-div'>
 		<label htmlFor={id}>{lableText}</label>
@@ -19,6 +20,7 @@ const Input = ({
 			min={min}
 			name={name}
 			id={id}
+			value={value}
 			onChange={onChange}
 			className={className}
 			required={required}

@@ -56,5 +56,6 @@ export const routes = {
 	login: '/login',
 	register: '/register',
 	allCourses: '/courses/all',
+	addCourse: '/courses/add',
 	allAuthors: '/authors/all',
 };
