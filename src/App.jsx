@@ -6,13 +6,13 @@ import Registration from './components/Registration/Registration';
 import Login from './components/Login/Login';
 import CourseInfo from './components/CourseInfo/CourseInfo';
 import CreateCourse from './components/CreateCourse/CreateCourse';
-import { CourseProvider } from './context/coursesContext';
+// import { CourseProvider } from './context/coursesContext';
 import Error from './components/Error/Error';
 import ProtectedRoute from './helpers/ProtectedRoute';
-import { LoginProvider } from './context/loginContext';
+// import { LoginProvider } from './context/loginContext';
 function App() {
 	return (
-		<CourseProvider>
+		<>
 			<Header />
 			<BrowserRouter>
 				<Routes>
@@ -47,7 +47,7 @@ function App() {
 					<Route path='*' element={<Error />} />
 				</Routes>
 			</BrowserRouter>
-		</CourseProvider>
+		</>
 	);
 }
 

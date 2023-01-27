@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import CourseCard from './Components/CourseCard/CourseCard';
-import { mockedCoursesList } from '../../constants.js';
+// import { mockedCoursesList } from '../../constants.js';
 import './courses.scss';
 import SearchBar from './Components/SearchBar/SearchBar';
 import Button from '../../common/Button/Button';
-import { useCourseContext } from '../../context/coursesContext';
+// import { useCourseContext } from '../../context/coursesContext';
 import { useSelector, useDispatch } from 'react-redux';
 import {
 	selectAllCourses,
@@ -20,7 +20,7 @@ import {
 } from '../../features/authors/authorsSlice';
 
 const Courses = () => {
-	const context = useCourseContext();
+	// const context = useCourseContext();
 	// const { courses, authors, setCourses } = context;
 	const dispatch = useDispatch();
 
@@ -30,16 +30,17 @@ const Courses = () => {
 
 	const authors = useSelector(selectAllAuthors);
 
-	const { setCourses } = context;
+	// const { setCourses } = context;
 
 	const [query, setQuery] = useState('');
 
-	useEffect(() => {
-		dispatch(fetchAuthors());
-	}, []);
+	// useEffect(() => {
+	// 	dispatch(fetchAuthors());
+	// }, []);
 
 	useEffect(() => {
 		if (coursesStatus === 'idle') {
+			dispatch(fetchAuthors());
 			dispatch(fetchCourses());
 		}
 	}, [coursesStatus, dispatch]);
@@ -64,7 +65,7 @@ const Courses = () => {
 						placeholderText='Enter course name or id...'
 						onChange={(event) => setQuery(event.target.value)}
 						coursesFilter={courses}
-						setCourses={setCourses}
+						// setCourses={setCourses}
 						query={query}
 					/>
 					<Link to='add'>

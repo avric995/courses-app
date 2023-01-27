@@ -2,7 +2,7 @@ import './header.scss';
 import { Outlet } from 'react-router-dom';
 import Button from '../../common/Button/Button';
 import { Logo } from './components/Logo/Logo';
-import { useLoginContext } from '../../context/loginContext';
+// import { useLoginContext } from '../../context/loginContext';
 import { useSelector, useDispatch } from 'react-redux';
 import { user } from '../../features/user/userSlice';
 import { logout } from '../../features/user/userSlice';

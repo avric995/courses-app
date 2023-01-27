@@ -5,17 +5,20 @@ import './createCourse.scss';
 import Input from '../../common/Input/Input';
 import Button from '../../common/Button/Button';
 import timeConvert from '../../helpers/pripeDuration';
-import { useCourseContext } from '../../context/coursesContext';
+// import { useCourseContext } from '../../context/coursesContext';
 import { courseAdded } from '../Courses/coursesSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectAllAuthors } from '../../features/authors/authorsSlice';
+import {
+	authorAdded,
+	selectAllAuthors,
+} from '../../features/authors/authorsSlice';
 
 const CreateCourse = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
-	const context = useCourseContext();
+	// const context = useCourseContext();
 	// const { courses, authors, setCourses, setAuthors } = context;
-	const { setAuthors } = context;
+	// const { setAuthors } = context;
 	const authors = useSelector(selectAllAuthors);
 
 	const [addAuthor, setAddAuthor] = useState({
@@ -60,9 +63,11 @@ const CreateCourse = () => {
 				name: name,
 			};
 
-			const newAuthors = [...authors, newAuthor];
+			dispatch(authorAdded(newAuthor));
+			console.log(authors);
+			// const newAuthors = [...authors, newAuthor];
 			setAllAuthors((prevState) => [...prevState, newAuthor]);
-			setAuthors(newAuthors);
+			// setAuthors(newAuthors);
 		}
 
 		const inputField = document.querySelector('.input-author');
@@ -82,12 +87,15 @@ const CreateCourse = () => {
 
 	// add course author
 
-	const addCourseAut = (id) => {
+	const addCourseAut = (event, id) => {
+		event.preventDefault();
+		const selectedAuthor = allAuthors.find((author) => author.id === id);
 		const newAuthors = allAuthors.filter((autor) => autor.id !== id);
+
 		setAllAuthors(newAuthors);
 
-		const courseAuthorNew = allAuthors.filter((author) => author.id === id);
-		const courseAuthorList = [...courseAuthorsList, ...courseAuthorNew];
+		const courseAuthorNew = selectedAuthor;
+		const courseAuthorList = [...courseAuthorsList, courseAuthorNew];
 		setCourseAuthorsList(courseAuthorList);
 	};
 
@@ -102,7 +110,7 @@ const CreateCourse = () => {
 		const deletedCourseAuthor = courseAuthorsList.filter(
 			(author) => author.id === id
 		);
-		setAuthors((prevState) => [...prevState, ...deletedCourseAuthor]);
+		setAllAuthors((prevState) => [...prevState, ...deletedCourseAuthor]);
 	};
 
 	// add course
@@ -156,7 +164,7 @@ const CreateCourse = () => {
 			// const newCourses = [...courses, newCourse];
 			// setCourses(newCourses);
 			dispatch(courseAdded(newCourse));
-			setAuthors(allAuthors);
+			setAllAuthors(authors);
 			navigate('/courses');
 		}
 	};
@@ -203,13 +211,13 @@ const CreateCourse = () => {
 					<div className='authors'>
 						<h2>Authors</h2>
 						<ul>
-							{authors.map((author) => {
+							{allAuthors.map((author) => {
 								return (
 									<li key={author.id}>
 										{author.name}
 										<Button
 											value='Add Author'
-											onClick={() => addCourseAut(author.id)}
+											onClick={(e) => addCourseAut(e, author.id)}
 										/>
 									</li>
 								);

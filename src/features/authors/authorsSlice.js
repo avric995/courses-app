@@ -17,13 +17,20 @@ export const fetchAuthors = createAsyncThunk(
 const authorsSlice = createSlice({
 	name: 'authors',
 	initialState,
-	reducers: {},
+	reducers: {
+		authorAdded(state, action) {
+			console.log(action.payload);
+			state.authors.push(action.payload);
+		},
+	},
 	extraReducers(builder) {
 		builder.addCase(fetchAuthors.fulfilled, (state, action) => {
 			state.authors = action.payload.result;
 		});
 	},
 });
+
+export const { authorAdded } = authorsSlice.actions;
 
 export const selectAllAuthors = (state) => state.authors.authors;
 

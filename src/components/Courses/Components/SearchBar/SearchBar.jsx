@@ -7,7 +7,7 @@ const SearchBar = ({
 	onChange,
 	coursesFilter,
 	query,
-	setCourses,
+	setAllCourses,
 }) => {
 	const handleSearchClick = (query) => {
 		if (query !== '') {
@@ -16,9 +16,9 @@ const SearchBar = ({
 					course.title.toLowerCase().includes(query.toLowerCase()) ||
 					course.id.toLowerCase().includes(query.toLowerCase())
 			);
-			setCourses(filteredCourse);
+			setAllCourses(filteredCourse);
 		} else {
-			setCourses(coursesFilter);
+			setAllCourses(coursesFilter);
 		}
 	};
 

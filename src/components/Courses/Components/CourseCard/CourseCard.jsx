@@ -6,6 +6,8 @@ import formatDate from '../../../../helpers/formatDate';
 import findAutor from '../../../../helpers/findAuthors';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
+import { useDispatch } from 'react-redux';
+import { courseDeleted } from '../../coursesSlice';
 
 const CourseCard = ({
 	id,
@@ -16,6 +18,10 @@ const CourseCard = ({
 	authors,
 	authorsList,
 }) => {
+	const dispatch = useDispatch();
+	const handleDeleteClick = (id) => {
+		dispatch(courseDeleted({ id }));
+	};
 	return (
 		<>
 			<article className='course'>
@@ -42,7 +48,14 @@ const CourseCard = ({
 							<Button value='Show course' />
 						</Link>
 						<Button value={<FontAwesomeIcon icon={faEdit} />} />
-						<Button value={<FontAwesomeIcon icon={faTrash} />} />
+						<Button
+							value={
+								<FontAwesomeIcon
+									icon={faTrash}
+									onClick={() => handleDeleteClick(id)}
+								/>
+							}
+						/>
 					</div>
 				</div>
 			</article>
