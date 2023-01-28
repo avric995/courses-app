@@ -3,15 +3,12 @@ import { useParams, Link } from 'react-router-dom';
 import findAutor from '../../helpers/findAuthors';
 import timeConvert from '../../helpers/pripeDuration';
 import formatDate from '../../helpers/formatDate';
-// import { useCourseContext } from '../../context/coursesContext';
+
 import { useSelector } from 'react-redux';
 import { selectCourseById } from '../Courses/coursesSlice';
 import { selectAllAuthors } from '../../features/authors/authorsSlice';
 
 const CourseInfo = () => {
-	// const context = useCourseContext();
-	// const { authors } = context;
-
 	const authors = useSelector(selectAllAuthors);
 	const { courseId } = useParams();
 
@@ -19,13 +16,10 @@ const CourseInfo = () => {
 		selectCourseById(state, courseId)
 	);
 
-	// const selectedCourseInfo = courses.find((course) => course.id === courseId);
-
 	return (
 		<section className='course-info-section'>
 			<p>
 				<Link to={-1} className='back'>
-					{' '}
 					&lt; Back to courses
 				</Link>
 			</p>
@@ -40,7 +34,7 @@ const CourseInfo = () => {
 						Duration: <span>{timeConvert(selectedCourseInfo.duration)}</span>
 					</h4>
 					<h4>
-						Created:{' '}
+						Created:
 						<span> {formatDate(selectedCourseInfo.creationDate)} </span>
 					</h4>
 					<h4>

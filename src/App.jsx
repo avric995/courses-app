@@ -16,7 +16,7 @@ function App() {
 			<Header />
 			<BrowserRouter>
 				<Routes>
-					<Route path='/' element={<Navigate to='login' />}></Route>
+					<Route index path='/' element={<Navigate to='login' />}></Route>
 					<Route path='login' element={<Login />} />
 					<Route path='registration' element={<Registration />} />
 					<Route
