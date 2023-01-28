@@ -8,8 +8,6 @@ const initialState = {
 	error: null,
 };
 
-console.log(initialState.courses);
-
 export const fetchCourses = createAsyncThunk(
 	'courses/fetchCourses',
 	async () => {

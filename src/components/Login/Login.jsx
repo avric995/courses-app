@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Button from '../../common/Button/Button';
 import Input from '../../common/Input/Input';
 import './login.scss';
-// import { useLoginContext } from '../../context/loginContext';
+
 import { useNavigate } from 'react-router-dom';
 
 import axios from '../../api/axios';
@@ -16,8 +16,6 @@ const Login = () => {
 	const navigate = useNavigate();
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
-
-	// const { setLogedUser } = useLoginContext();
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -37,10 +35,6 @@ const Login = () => {
 			const [barrer, token] = response?.data.result.split(' ');
 			localStorage.setItem('token', token);
 			if (localStorage.getItem('token')) {
-				// setLogedUser({
-				// 	name: nameString,
-				// 	token: localStorage.getItem('token'),
-				// });
 				dispatch(
 					login({
 						isAuth: true,

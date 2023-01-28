@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import CourseCard from './Components/CourseCard/CourseCard';
-// import { mockedCoursesList } from '../../constants.js';
+
 import './courses.scss';
 import SearchBar from './Components/SearchBar/SearchBar';
 import Button from '../../common/Button/Button';
-// import { useCourseContext } from '../../context/coursesContext';
+
 import { useSelector, useDispatch } from 'react-redux';
 import {
 	selectAllCourses,
@@ -20,23 +20,18 @@ import {
 } from '../../features/authors/authorsSlice';
 
 const Courses = () => {
-	// const context = useCourseContext();
-	// const { courses, authors, setCourses } = context;
 	const dispatch = useDispatch();
 
 	const courses = useSelector(selectAllCourses);
+
+	const [allCourses, setAllCourses] = useState([]);
+
 	const coursesStatus = useSelector(getCoursesStatus);
 	const error = useSelector(getCoursesError);
 
 	const authors = useSelector(selectAllAuthors);
 
-	// const { setCourses } = context;
-
 	const [query, setQuery] = useState('');
-
-	// useEffect(() => {
-	// 	dispatch(fetchAuthors());
-	// }, []);
 
 	useEffect(() => {
 		if (coursesStatus === 'idle') {
@@ -45,12 +40,25 @@ const Courses = () => {
 		}
 	}, [coursesStatus, dispatch]);
 
+	useEffect(() => {
+		if (courses && !allCourses.length) {
+			setAllCourses(courses);
+		}
+	}, [courses, allCourses]);
 	let content;
 	if (coursesStatus === 'loading') {
 		content = <p>"Loading..."</p>;
 	} else if (coursesStatus === 'succeeded') {
-		content = courses.map((course) => {
-			return <CourseCard key={course.id} {...course} authorsList={authors} />;
+		content = allCourses.map((course) => {
+			return (
+				<CourseCard
+					key={course.id}
+					{...course}
+					setCourses={setAllCourses}
+					courses={courses}
+					authorsList={authors}
+				/>
+			);
 		});
 	} else if (coursesStatus === 'failed') {
 		content = <p>{error}</p>;
@@ -64,8 +72,8 @@ const Courses = () => {
 					<SearchBar
 						placeholderText='Enter course name or id...'
 						onChange={(event) => setQuery(event.target.value)}
-						coursesFilter={courses}
-						// setCourses={setCourses}
+						coursesFilter={allCourses}
+						setAllCourses={setAllCourses}
 						query={query}
 					/>
 					<Link to='add'>

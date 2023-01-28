@@ -5,7 +5,7 @@ import './createCourse.scss';
 import Input from '../../common/Input/Input';
 import Button from '../../common/Button/Button';
 import timeConvert from '../../helpers/pripeDuration';
-// import { useCourseContext } from '../../context/coursesContext';
+
 import { courseAdded } from '../Courses/coursesSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -16,9 +16,7 @@ import {
 const CreateCourse = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
-	// const context = useCourseContext();
-	// const { courses, authors, setCourses, setAuthors } = context;
-	// const { setAuthors } = context;
+
 	const authors = useSelector(selectAllAuthors);
 
 	const [addAuthor, setAddAuthor] = useState({
@@ -64,10 +62,8 @@ const CreateCourse = () => {
 			};
 
 			dispatch(authorAdded(newAuthor));
-			console.log(authors);
-			// const newAuthors = [...authors, newAuthor];
+
 			setAllAuthors((prevState) => [...prevState, newAuthor]);
-			// setAuthors(newAuthors);
 		}
 
 		const inputField = document.querySelector('.input-author');
@@ -161,8 +157,6 @@ const CreateCourse = () => {
 		} else if (newCourse.authors.length === 0) {
 			alert('Please select authors');
 		} else {
-			// const newCourses = [...courses, newCourse];
-			// setCourses(newCourses);
 			dispatch(courseAdded(newCourse));
 			setAllAuthors(authors);
 			navigate('/courses');

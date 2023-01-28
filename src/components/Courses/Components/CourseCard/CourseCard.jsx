@@ -17,10 +17,13 @@ const CourseCard = ({
 	duration,
 	authors,
 	authorsList,
+	setCourses,
+	courses,
 }) => {
 	const dispatch = useDispatch();
 	const handleDeleteClick = (id) => {
 		dispatch(courseDeleted({ id }));
+		setCourses(courses);
 	};
 	return (
 		<>
