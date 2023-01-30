@@ -29,9 +29,15 @@
     }
     button{
     align-self: center;
+
+    
 }
 }
 
+.buttons{
+        display: flex;
+        gap: 1rem;
+    }
 
 span{
     font-size: 1.6rem;

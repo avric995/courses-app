@@ -1,17 +1,68 @@
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import CourseCard from './Components/CourseCard/CourseCard';
-import { mockedCoursesList } from '../../constants.js';
+
 import './courses.scss';
 import SearchBar from './Components/SearchBar/SearchBar';
 import Button from '../../common/Button/Button';
-import { useCourseContext } from '../../context/coursesContext';
+
+import { useSelector, useDispatch } from 'react-redux';
+import {
+	selectAllCourses,
+	getCoursesStatus,
+	getCoursesError,
+	fetchCourses,
+} from './coursesSlice';
+
+import {
+	selectAllAuthors,
+	fetchAuthors,
+} from '../../features/authors/authorsSlice';
 
 const Courses = () => {
-	const context = useCourseContext();
-	const { courses, authors, setCourses } = context;
+	const dispatch = useDispatch();
+
+	const courses = useSelector(selectAllCourses);
+
+	const [allCourses, setAllCourses] = useState([]);
+
+	const coursesStatus = useSelector(getCoursesStatus);
+	const error = useSelector(getCoursesError);
+
+	const authors = useSelector(selectAllAuthors);
 
 	const [query, setQuery] = useState('');
+
+	useEffect(() => {
+		if (coursesStatus === 'idle') {
+			dispatch(fetchAuthors());
+			dispatch(fetchCourses());
+		}
+	}, [coursesStatus, dispatch]);
+
+	useEffect(() => {
+		if (courses && !allCourses.length) {
+			setAllCourses(courses);
+		}
+	}, [courses, allCourses]);
+	let content;
+	if (coursesStatus === 'loading') {
+		content = <p>"Loading..."</p>;
+	} else if (coursesStatus === 'succeeded') {
+		content = allCourses.map((course) => {
+			return (
+				<CourseCard
+					key={course.id}
+					{...course}
+					setCourses={setAllCourses}
+					courses={courses}
+					authorsList={authors}
+				/>
+			);
+		});
+	} else if (coursesStatus === 'failed') {
+		content = <p>{error}</p>;
+	}
 
 	return (
 		<main>
@@ -21,21 +72,15 @@ const Courses = () => {
 					<SearchBar
 						placeholderText='Enter course name or id...'
 						onChange={(event) => setQuery(event.target.value)}
-						coursesFilter={mockedCoursesList}
-						setCourses={setCourses}
+						coursesFilter={allCourses}
+						setAllCourses={setAllCourses}
 						query={query}
 					/>
 					<Link to='add'>
 						<Button value='Add new course' />
 					</Link>
 				</div>
-				<div>
-					{courses.map((course) => {
-						return (
-							<CourseCard key={course.id} {...course} authorsList={authors} />
-						);
-					})}
-				</div>
+				<div>{content}</div>
 			</section>
 			)
 		</main>

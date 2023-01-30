@@ -1,14 +1,18 @@
 import Input from '../../../../common/Input/Input';
 import Button from '../../../../common/Button/Button';
 import './searchBar.scss';
+import { useSelector } from 'react-redux';
+import { selectAllCourses } from '../../coursesSlice';
 
 const SearchBar = ({
 	placeholderText,
 	onChange,
 	coursesFilter,
 	query,
-	setCourses,
+	setAllCourses,
 }) => {
+	const courses = useSelector(selectAllCourses);
+
 	const handleSearchClick = (query) => {
 		if (query !== '') {
 			const filteredCourse = coursesFilter.filter(
@@ -16,9 +20,9 @@ const SearchBar = ({
 					course.title.toLowerCase().includes(query.toLowerCase()) ||
 					course.id.toLowerCase().includes(query.toLowerCase())
 			);
-			setCourses(filteredCourse);
+			setAllCourses(filteredCourse);
 		} else {
-			setCourses(coursesFilter);
+			setAllCourses(courses);
 		}
 	};
 

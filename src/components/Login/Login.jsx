@@ -3,25 +3,26 @@ import { Link } from 'react-router-dom';
 import Button from '../../common/Button/Button';
 import Input from '../../common/Input/Input';
 import './login.scss';
-import { useLoginContext } from '../../context/loginContext';
+
 import { useNavigate } from 'react-router-dom';
 
 import axios from '../../api/axios';
-const LOGIN_URL = '/login';
+import { routes } from '../../constants';
+import { useDispatch } from 'react-redux';
+import { login } from '../../features/user/userSlice';
 
-const Registration = () => {
+const Login = () => {
+	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
-
-	const { setLogedUser } = useLoginContext();
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 
 		try {
 			const response = await axios.post(
-				LOGIN_URL,
+				routes.login,
 				JSON.stringify({ email, password }),
 				{
 					headers: { 'Content-Type': 'application/json' },
@@ -29,14 +30,20 @@ const Registration = () => {
 			);
 
 			const nameString = response?.data.user.name;
+			const emailString = response?.data.user.email;
 
 			const [barrer, token] = response?.data.result.split(' ');
 			localStorage.setItem('token', token);
 			if (localStorage.getItem('token')) {
-				setLogedUser({
-					name: nameString,
-					token: localStorage.getItem('token'),
-				});
+				dispatch(
+					login({
+						isAuth: true,
+						name: nameString,
+						email: emailString,
+						token: token,
+					})
+				);
+
 				navigate('/courses');
 			} else if (!localStorage.getItem('token')) {
 				localStorage.setItem('token', token);
@@ -75,7 +82,7 @@ const Registration = () => {
 				/>
 				<Button type='submit' value='Login' />
 				<p>
-					If you don't have an account you can{' '}
+					If you don't have an account you can
 					<Link to='/registration'>Register</Link>
 				</p>
 			</form>
@@ -83,4 +90,4 @@ const Registration = () => {
 	);
 };
 
-export default Registration;
+export default Login;
