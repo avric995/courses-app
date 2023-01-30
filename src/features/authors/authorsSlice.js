@@ -9,8 +9,8 @@ const initialState = {
 export const fetchAuthors = createAsyncThunk(
 	'authors/fetchAuthors',
 	async () => {
-		const response = await axios.get(routes.allAuthors);
-		return response.data;
+		const { data } = await axios.get(routes.allAuthors);
+		return data;
 	}
 );
 

@@ -11,16 +11,16 @@ const initialState = {
 export const fetchCourses = createAsyncThunk(
 	'courses/fetchCourses',
 	async () => {
-		const response = await axios.get(routes.allCourses);
-		return response.data;
+		const { data } = await axios.get(routes.allCourses);
+		return data;
 	}
 );
 
 export const addNewCourse = createAsyncThunk(
 	'courses/addNewCourse',
 	async (initialCourse) => {
-		const response = await axios.post(routes.addCourse, initialCourse);
-		return response.data;
+		const { data } = await axios.post(routes.addCourse, initialCourse);
+		return data;
 	}
 );
 
