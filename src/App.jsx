@@ -9,6 +9,7 @@ import CreateCourse from './components/CreateCourse/CreateCourse';
 
 import Error from './components/Error/Error';
 import ProtectedRoute from './helpers/ProtectedRoute';
+import UserProtectedRoute from './helpers/UserProtectedRoute';
 
 function App() {
 	return (
@@ -31,7 +32,9 @@ function App() {
 						path='courses/add'
 						element={
 							<ProtectedRoute>
-								<CreateCourse />
+								<UserProtectedRoute>
+									<CreateCourse />
+								</UserProtectedRoute>
 							</ProtectedRoute>
 						}
 					/>

@@ -19,6 +19,7 @@ const CourseCard = ({
 	authorsList,
 	setCourses,
 	courses,
+	logedUser,
 }) => {
 	const dispatch = useDispatch();
 	const handleDeleteClick = (id) => {
@@ -50,15 +51,23 @@ const CourseCard = ({
 						<Link to={`${id}`}>
 							<Button value='Show course' />
 						</Link>
-						<Button value={<FontAwesomeIcon icon={faEdit} />} />
-						<Button
-							value={
-								<FontAwesomeIcon
-									icon={faTrash}
-									onClick={() => handleDeleteClick(id)}
-								/>
-							}
-						/>
+						{logedUser.role === 'admin' ? (
+							<Button value={<FontAwesomeIcon icon={faEdit} />} />
+						) : (
+							''
+						)}
+						{logedUser.role === 'admin' ? (
+							<Button
+								value={
+									<FontAwesomeIcon
+										icon={faTrash}
+										onClick={() => handleDeleteClick(id)}
+									/>
+								}
+							/>
+						) : (
+							''
+						)}
 					</div>
 				</div>
 			</article>

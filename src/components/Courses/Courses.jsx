@@ -18,6 +18,7 @@ import {
 	selectAllAuthors,
 	fetchAuthors,
 } from '../../features/authors/authorsSlice';
+import { user } from '../../features/user/userSlice';
 
 const Courses = () => {
 	const dispatch = useDispatch();
@@ -30,6 +31,8 @@ const Courses = () => {
 	const error = useSelector(getCoursesError);
 
 	const authors = useSelector(selectAllAuthors);
+
+	const logedUser = useSelector(user);
 
 	const [query, setQuery] = useState('');
 
@@ -57,6 +60,7 @@ const Courses = () => {
 					setCourses={setAllCourses}
 					courses={courses}
 					authorsList={authors}
+					logedUser={logedUser}
 				/>
 			);
 		});
@@ -76,9 +80,13 @@ const Courses = () => {
 						setAllCourses={setAllCourses}
 						query={query}
 					/>
-					<Link to='add'>
-						<Button value='Add new course' />
-					</Link>
+					{logedUser.role === 'admin' ? (
+						<Link to='add'>
+							<Button value='Add new course' />
+						</Link>
+					) : (
+						''
+					)}
 				</div>
 				<div>{content}</div>
 			</section>

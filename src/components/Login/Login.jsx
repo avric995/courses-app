@@ -29,8 +29,11 @@ const Login = () => {
 				}
 			);
 
+			console.log(response);
+
 			const nameString = response?.data.user.name;
 			const emailString = response?.data.user.email;
+			const role = response?.data.user.role;
 
 			const [barrer, token] = response?.data.result.split(' ');
 			localStorage.setItem('token', token);
@@ -41,6 +44,7 @@ const Login = () => {
 						name: nameString,
 						email: emailString,
 						token: token,
+						role: role,
 					})
 				);
 
