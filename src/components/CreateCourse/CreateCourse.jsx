@@ -1,15 +1,15 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { v4 as uuidv4 } from 'uuid';
+// import { v4 as uuidv4 } from 'uuid';
 import './createCourse.scss';
 import Input from '../../common/Input/Input';
 import Button from '../../common/Button/Button';
 import timeConvert from '../../helpers/pripeDuration';
 
-import { courseAdded } from '../Courses/coursesSlice';
+import { addNewCourse } from '../Courses/coursesSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-	authorAdded,
+	addNewAuthor,
 	selectAllAuthors,
 } from '../../features/authors/authorsSlice';
 
@@ -18,11 +18,12 @@ const CreateCourse = () => {
 	const navigate = useNavigate();
 
 	const authors = useSelector(selectAllAuthors);
+	console.log(authors);
 
 	const [addAuthor, setAddAuthor] = useState({
 		name: '',
 	});
-	const [allAuthors, setAllAuthors] = useState(authors);
+	const [allAuthors, setAllAuthors] = useState([]);
 
 	const [duration, setDuration] = useState(0);
 
@@ -32,6 +33,12 @@ const CreateCourse = () => {
 		title: '',
 		description: '',
 	});
+
+	useEffect(() => {
+		if (authors && !allAuthors.length) {
+			setAllAuthors(authors);
+		}
+	}, [authors, allAuthors]);
 
 	// Add Author
 
@@ -57,11 +64,11 @@ const CreateCourse = () => {
 			alert('Must contain 2 or more char');
 		} else {
 			const newAuthor = {
-				id: uuidv4(),
+				// id: uuidv4(),
 				name: name,
 			};
 
-			dispatch(authorAdded(newAuthor));
+			dispatch(addNewAuthor(newAuthor));
 
 			setAllAuthors((prevState) => [...prevState, newAuthor]);
 		}
@@ -126,22 +133,22 @@ const CreateCourse = () => {
 
 	const handleAddCourseFormSubmit = (event) => {
 		event.preventDefault();
-		const today = new Date();
-		const yyyy = today.getFullYear();
-		let mm = today.getMonth() + 1; // Meseci krecu od 0!
-		let dd = today.getDate();
+		// const today = new Date();
+		// const yyyy = today.getFullYear();
+		// let mm = today.getMonth() + 1; // Meseci krecu od 0!
+		// let dd = today.getDate();
 
-		if (dd < 10) dd = '0' + dd;
-		if (mm < 10) mm = '0' + mm;
+		// if (dd < 10) dd = '0' + dd;
+		// if (mm < 10) mm = '0' + mm;
 
-		const formattedToday = dd + '/' + mm + '/' + yyyy;
+		// const formattedToday = dd + '/' + mm + '/' + yyyy;
 
 		const newCourse = {
-			id: uuidv4(),
+			// id: uuidv4(),
 			title: addCourse.title,
 			description: addCourse.description,
-			creationDate: formattedToday,
-			duration: duration,
+			// creationDate: formattedToday,
+			duration: Number(duration),
 			authors:
 				courseAuthorsList.length === 0
 					? []
@@ -157,7 +164,7 @@ const CreateCourse = () => {
 		} else if (newCourse.authors.length === 0) {
 			alert('Please select authors');
 		} else {
-			dispatch(courseAdded(newCourse));
+			dispatch(addNewCourse(newCourse));
 			setAllAuthors(authors);
 			navigate('/courses');
 		}

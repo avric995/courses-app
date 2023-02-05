@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from '../../api/axios';
+import { API } from '../../api/axios';
 import { routes } from '../../constants';
 
 const initialState = {
@@ -9,7 +9,16 @@ const initialState = {
 export const fetchAuthors = createAsyncThunk(
 	'authors/fetchAuthors',
 	async () => {
-		const { data } = await axios.get(routes.allAuthors);
+		const { data } = await API.get(routes.allAuthors);
+		return data;
+	}
+);
+
+export const addNewAuthor = createAsyncThunk(
+	'courses/addNewAuthor',
+	async (initialAuthor) => {
+		console.log(initialAuthor);
+		const { data } = await API.post(routes.addAuthor, initialAuthor);
 		return data;
 	}
 );
@@ -23,9 +32,15 @@ const authorsSlice = createSlice({
 		},
 	},
 	extraReducers(builder) {
-		builder.addCase(fetchAuthors.fulfilled, (state, action) => {
-			state.authors = action.payload.result;
-		});
+		builder
+
+			.addCase(fetchAuthors.fulfilled, (state, action) => {
+				state.authors = action.payload.result;
+			})
+
+			.addCase(addNewAuthor.fulfilled, (state, action) => {
+				state.authors.push(action.payload);
+			});
 	},
 });
 

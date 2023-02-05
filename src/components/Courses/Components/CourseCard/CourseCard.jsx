@@ -26,6 +26,7 @@ const CourseCard = ({
 		dispatch(courseDeleted({ id }));
 		setCourses(courses);
 	};
+	// console.log(authors);
 	return (
 		<>
 			<article className='course'>

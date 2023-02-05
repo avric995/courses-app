@@ -28,9 +28,11 @@ const Courses = () => {
 	const [allCourses, setAllCourses] = useState([]);
 
 	const coursesStatus = useSelector(getCoursesStatus);
+	// console.log(coursesStatus);
 	const error = useSelector(getCoursesError);
 
 	const authors = useSelector(selectAllAuthors);
+	// console.log(authros);
 
 	const logedUser = useSelector(user);
 
@@ -52,7 +54,7 @@ const Courses = () => {
 	if (coursesStatus === 'loading') {
 		content = <p>"Loading..."</p>;
 	} else if (coursesStatus === 'succeeded') {
-		content = allCourses.map((course) => {
+		content = courses.map((course) => {
 			return (
 				<CourseCard
 					key={course.id}

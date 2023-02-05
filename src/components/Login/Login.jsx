@@ -6,7 +6,7 @@ import './login.scss';
 
 import { useNavigate } from 'react-router-dom';
 
-import axios from '../../api/axios';
+import { API } from '../../api/axios';
 import { routes } from '../../constants';
 import { useDispatch } from 'react-redux';
 import { login } from '../../features/user/userSlice';
@@ -21,7 +21,7 @@ const Login = () => {
 		e.preventDefault();
 
 		try {
-			const response = await axios.post(
+			const response = await API.post(
 				routes.login,
 				JSON.stringify({ email, password }),
 				{

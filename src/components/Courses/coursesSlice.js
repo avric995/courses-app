@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from '../../api/axios';
+import { API } from '../../api/axios';
 import { routes } from '../../constants';
 
 const initialState = {
@@ -11,7 +11,7 @@ const initialState = {
 export const fetchCourses = createAsyncThunk(
 	'courses/fetchCourses',
 	async () => {
-		const { data } = await axios.get(routes.allCourses);
+		const { data } = await API.get(routes.allCourses);
 		return data;
 	}
 );
@@ -19,7 +19,8 @@ export const fetchCourses = createAsyncThunk(
 export const addNewCourse = createAsyncThunk(
 	'courses/addNewCourse',
 	async (initialCourse) => {
-		const { data } = await axios.post(routes.addCourse, initialCourse);
+		// console.log(initialCourse);
+		const { data } = await API.post(routes.addCourse, initialCourse);
 		return data;
 	}
 );
@@ -52,6 +53,7 @@ const coursesSlice = createSlice({
 				state.error = action.error.message;
 			})
 			.addCase(addNewCourse.fulfilled, (state, action) => {
+				state.status = 'idle';
 				state.courses.push(action.payload);
 			});
 	},
