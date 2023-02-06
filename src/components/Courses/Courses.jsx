@@ -17,6 +17,7 @@ import {
 import {
 	selectAllAuthors,
 	fetchAuthors,
+	// getAuhorStatus,
 } from '../../features/authors/authorsSlice';
 import { user } from '../../features/user/userSlice';
 
@@ -28,6 +29,7 @@ const Courses = () => {
 	const [allCourses, setAllCourses] = useState([]);
 
 	const coursesStatus = useSelector(getCoursesStatus);
+	// const authorStatus = useSelector(getAuhorStatus);
 	// console.log(coursesStatus);
 	const error = useSelector(getCoursesError);
 

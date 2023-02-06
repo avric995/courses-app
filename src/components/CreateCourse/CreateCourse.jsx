@@ -10,6 +10,8 @@ import { addNewCourse } from '../Courses/coursesSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import {
 	addNewAuthor,
+	// fetchAuthors,
+	// getAuhorStatus,
 	selectAllAuthors,
 } from '../../features/authors/authorsSlice';
 
@@ -18,7 +20,8 @@ const CreateCourse = () => {
 	const navigate = useNavigate();
 
 	const authors = useSelector(selectAllAuthors);
-	console.log(authors);
+
+	// const authorStatus = useSelector(getAuhorStatus);
 
 	const [addAuthor, setAddAuthor] = useState({
 		name: '',
@@ -34,11 +37,14 @@ const CreateCourse = () => {
 		description: '',
 	});
 
+	// useEffect(() => {
+	// 	if (authorStatus === 'created') dispatch(fetchAuthors);
+	// }, [dispatch, authorStatus]);
+
 	useEffect(() => {
-		if (authors && !allAuthors.length) {
-			setAllAuthors(authors);
-		}
-	}, [authors, allAuthors]);
+		console.log(authors);
+		setAllAuthors(authors);
+	}, [authors]);
 
 	// Add Author
 
@@ -69,8 +75,11 @@ const CreateCourse = () => {
 			};
 
 			dispatch(addNewAuthor(newAuthor));
+			setAllAuthors(authors);
 
-			setAllAuthors((prevState) => [...prevState, newAuthor]);
+			setAddAuthor('');
+
+			// setAllAuthors((prevState) => [...prevState, newAuthor]);
 		}
 
 		const inputField = document.querySelector('.input-author');
@@ -165,7 +174,7 @@ const CreateCourse = () => {
 			alert('Please select authors');
 		} else {
 			dispatch(addNewCourse(newCourse));
-			setAllAuthors(authors);
+			// setAllAuthors(authors);
 			navigate('/courses');
 		}
 	};

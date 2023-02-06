@@ -21,7 +21,7 @@ export const addNewCourse = createAsyncThunk(
 	async (initialCourse) => {
 		// console.log(initialCourse);
 		const { data } = await API.post(routes.addCourse, initialCourse);
-		return data;
+		return data.result;
 	}
 );
 
@@ -53,7 +53,7 @@ const coursesSlice = createSlice({
 				state.error = action.error.message;
 			})
 			.addCase(addNewCourse.fulfilled, (state, action) => {
-				state.status = 'idle';
+				// state.status = 'idle';
 				state.courses.push(action.payload);
 			});
 	},
