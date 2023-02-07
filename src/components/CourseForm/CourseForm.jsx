@@ -6,7 +6,11 @@ import Input from '../../common/Input/Input';
 import Button from '../../common/Button/Button';
 import timeConvert from '../../helpers/pripeDuration';
 
-import { addNewCourse, selectCourseById } from '../Courses/coursesSlice';
+import {
+	addNewCourse,
+	selectCourseById,
+	updateCourse,
+} from '../Courses/coursesSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import {
 	addNewAuthor,
@@ -14,6 +18,7 @@ import {
 	// getAuhorStatus,
 	selectAllAuthors,
 } from '../../features/authors/authorsSlice';
+import findAutor from '../../helpers/findAuthors';
 
 const CourseForm = () => {
 	const dispatch = useDispatch();
@@ -22,31 +27,54 @@ const CourseForm = () => {
 	const authors = useSelector(selectAllAuthors);
 
 	const { courseId } = useParams();
-	console.log(courseId);
 
 	const selectedCourse = useSelector((state) =>
 		selectCourseById(state, courseId)
 	);
 
-	console.log(selectedCourse);
+	const authorOnCourseList = [];
+	let auList = [];
+	if (selectedCourse) {
+		for (const id of selectedCourse.authors) {
+			let sAuth = authors.find((author) => author.id === id);
+			authorOnCourseList.push(sAuth);
+		}
+
+		auList = authors.filter((authors) => !authorOnCourseList.includes(authors));
+	}
+
+	console.log(authorOnCourseList);
+	console.log(auList);
 
 	const [addAuthor, setAddAuthor] = useState({
 		name: '',
 	});
-	const [allAuthors, setAllAuthors] = useState([]);
+	const [allAuthors, setAllAuthors] = useState(selectedCourse ? auList : []);
 
-	const [duration, setDuration] = useState(0);
+	const [duration, setDuration] = useState(
+		selectedCourse ? selectedCourse.duration : 0
+	);
 
-	const [courseAuthorsList, setCourseAuthorsList] = useState([]);
+	const [courseAuthorsList, setCourseAuthorsList] = useState(
+		selectedCourse ? authorOnCourseList : []
+	);
 
-	const [addCourse, setAddCourse] = useState({
-		title: '',
-		description: '',
-	});
+	const [title, setTitle] = useState(
+		selectedCourse ? selectedCourse.title : ''
+	);
+
+	const [description, setDescription] = useState(
+		selectedCourse ? selectedCourse.description : ''
+	);
+
+	// const [addCourse, setAddCourse] = useState({
+	// 	title: '',
+	// 	description: '',
+	// });
 
 	useEffect(() => {
-		setAllAuthors(authors);
-	}, [authors]);
+		if (!selectedCourse) setAllAuthors(authors);
+	}, [authors, selectedCourse]);
 
 	// Add Author
 
@@ -81,9 +109,9 @@ const CourseForm = () => {
 			setAddAuthor('');
 		}
 
-		const inputField = document.querySelector('.input-author');
+		// const inputField = document.querySelector('.input-author');
 
-		inputField.value = '';
+		// inputField.value = '';
 	};
 
 	// Add duration
@@ -126,25 +154,38 @@ const CourseForm = () => {
 
 	// add course
 
-	const handleAddCourseFormChange = (event) => {
+	const handleAddCourseTitle = (event) => {
 		event.preventDefault();
 
-		const fieldName = event.target.getAttribute('name');
-
-		const fieldValue = event.target.value;
-
-		const newFormData = { ...addCourse };
-		newFormData[fieldName] = fieldValue;
-
-		setAddCourse(newFormData);
+		const title = event.target.value;
+		setTitle(title);
 	};
+
+	const handleAddCourseDescription = (event) => {
+		event.preventDefault();
+		const description = event.target.value;
+		setDescription(description);
+	};
+
+	// const handleAddCourseFormChange = (event) => {
+	// 	event.preventDefault();
+
+	// 	const fieldName = event.target.getAttribute('name');
+
+	// 	const fieldValue = event.target.value;
+
+	// 	const newFormData = { ...addCourse };
+	// 	newFormData[fieldName] = fieldValue;
+
+	// 	setAddCourse(newFormData);
+	// };
 
 	const handleAddCourseFormSubmit = (event) => {
 		event.preventDefault();
 
 		const newCourse = {
-			title: addCourse.title,
-			description: addCourse.description,
+			title: title,
+			description: description,
 			duration: Number(duration),
 			authors:
 				courseAuthorsList.length === 0
@@ -161,13 +202,113 @@ const CourseForm = () => {
 		} else if (newCourse.authors.length === 0) {
 			alert('Please select authors');
 		} else {
-			dispatch(addNewCourse(newCourse));
+			!selectedCourse
+				? dispatch(addNewCourse(newCourse))
+				: dispatch(updateCourse({ id: selectedCourse.id, ...newCourse }));
 			// setAllAuthors(authors);
 			navigate('/courses');
 		}
 	};
 
-	// const update = (
+	const update = (
+		<section className='container-add'>
+			<form onSubmit={handleAddCourseFormSubmit}>
+				<div className='header-div'>
+					<Input
+						placeholderText='Enter title...'
+						type='text'
+						lableText='Title'
+						value={title}
+						name='title'
+						id='title'
+						onChange={handleAddCourseTitle}
+					/>
+
+					<Button
+						value={courseId ? 'Update Course' : 'Add Course'}
+						type='submit'
+					/>
+				</div>
+				<label htmlFor='desc'>Description</label>
+				<textarea
+					name='description'
+					id='desc'
+					cols='200'
+					rows='10'
+					minLength='2'
+					placeholder='Enter description'
+					value={description}
+					onChange={handleAddCourseDescription}
+				></textarea>
+				<div className='add-div'>
+					<div className='add-author'>
+						<h2>Add Author</h2>
+						<Input
+							placeholderText='Input author name...'
+							lableText='Author name'
+							id='authName'
+							name='name'
+							type='text'
+							min='2'
+							onChange={handleAddFormChange}
+							className='input-author'
+						/>
+						<Button value='Create Author' onClick={handleAddFormSubmit} />
+					</div>
+					<div className='authors'>
+						<h2>Authors</h2>
+						<ul>
+							{allAuthors.map((author) => {
+								return (
+									<li key={author.id}>
+										{author.name}
+										<Button
+											value='Add Author'
+											onClick={(e) => addCourseAut(e, author.id)}
+										/>
+									</li>
+								);
+							})}
+						</ul>
+					</div>
+					<div className='duration'>
+						<h2>Duration</h2>
+						<Input
+							placeholderText='Enter duration in minutes...'
+							type='number'
+							id='duration'
+							min='1'
+							lableText='Duration'
+							name='duration'
+							value={duration}
+							onChange={handleAddDurationChange}
+						/>
+						<p>
+							Duration: <span>{timeConvert(duration)}</span> hours
+						</p>
+					</div>
+					<div className='course-authors'>
+						<h2>Course Authors</h2>
+						<ul>
+							{courseAuthorsList.map((author) => {
+								return (
+									<li key={author.id}>
+										{author.name}
+										<Button
+											value='Remove Author'
+											onClick={() => removeCourseAut(author.id)}
+										/>
+									</li>
+								);
+							})}
+						</ul>
+					</div>
+				</div>
+			</form>
+		</section>
+	);
+
+	// const add = (
 	// 	<section className='container-add'>
 	// 		<form onSubmit={handleAddCourseFormSubmit}>
 	// 			<div className='header-div'>
@@ -175,13 +316,11 @@ const CourseForm = () => {
 	// 					placeholderText='Enter title...'
 	// 					type='text'
 	// 					lableText='Title'
-	// 					value={selectedCourse.title}
 	// 					name='title'
 	// 					id='title'
 	// 					onChange={handleAddCourseFormChange}
 	// 				/>
-	// 				)
-	// 				<Button value='Update Course' type='submit' />
+	// 				<Button value='Add Course' type='submit' />
 	// 			</div>
 	// 			<label htmlFor='desc'>Description</label>
 	// 			<textarea
@@ -191,7 +330,6 @@ const CourseForm = () => {
 	// 				rows='10'
 	// 				minLength='2'
 	// 				placeholder='Enter description'
-	// 				value={selectedCourse.description}
 	// 				onChange={handleAddCourseFormChange}
 	// 			></textarea>
 	// 			<div className='add-div'>
@@ -234,7 +372,6 @@ const CourseForm = () => {
 	// 						min='1'
 	// 						lableText='Duration'
 	// 						name='duration'
-	// 						value={selectedCourse.duration}
 	// 						onChange={handleAddDurationChange}
 	// 					/>
 	// 					<p>
@@ -244,7 +381,7 @@ const CourseForm = () => {
 	// 				<div className='course-authors'>
 	// 					<h2>Course Authors</h2>
 	// 					<ul>
-	// 						{selectedCourse.authors.map((author) => {
+	// 						{courseAuthorsList.map((author) => {
 	// 							return (
 	// 								<li key={author.id}>
 	// 									{author.name}
@@ -262,100 +399,13 @@ const CourseForm = () => {
 	// 	</section>
 	// );
 
-	const add = (
-		<section className='container-add'>
-			<form onSubmit={handleAddCourseFormSubmit}>
-				<div className='header-div'>
-					<Input
-						placeholderText='Enter title...'
-						type='text'
-						lableText='Title'
-						name='title'
-						id='title'
-						onChange={handleAddCourseFormChange}
-					/>
-					<Button value='Add Course' type='submit' />
-				</div>
-				<label htmlFor='desc'>Description</label>
-				<textarea
-					name='description'
-					id='desc'
-					cols='200'
-					rows='10'
-					minLength='2'
-					placeholder='Enter description'
-					onChange={handleAddCourseFormChange}
-				></textarea>
-				<div className='add-div'>
-					<div className='add-author'>
-						<h2>Add Author</h2>
-						<Input
-							placeholderText='Input author name...'
-							lableText='Author name'
-							id='authName'
-							name='name'
-							type='text'
-							min='2'
-							onChange={handleAddFormChange}
-							className='input-author'
-						/>
-						<Button value='Create Author' onClick={handleAddFormSubmit} />
-					</div>
-					<div className='authors'>
-						<h2>Authors</h2>
-						<ul>
-							{allAuthors.map((author) => {
-								return (
-									<li key={author.id}>
-										{author.name}
-										<Button
-											value='Add Author'
-											onClick={(e) => addCourseAut(e, author.id)}
-										/>
-									</li>
-								);
-							})}
-						</ul>
-					</div>
-					<div className='duration'>
-						<h2>Duration</h2>
-						<Input
-							placeholderText='Enter duration in minutes...'
-							type='number'
-							id='duration'
-							min='1'
-							lableText='Duration'
-							name='duration'
-							onChange={handleAddDurationChange}
-						/>
-						<p>
-							Duration: <span>{timeConvert(duration)}</span> hours
-						</p>
-					</div>
-					<div className='course-authors'>
-						<h2>Course Authors</h2>
-						<ul>
-							{courseAuthorsList.map((author) => {
-								return (
-									<li key={author.id}>
-										{author.name}
-										<Button
-											value='Remove Author'
-											onClick={() => removeCourseAut(author.id)}
-										/>
-									</li>
-								);
-							})}
-						</ul>
-					</div>
-				</div>
-			</form>
-		</section>
-	);
-
-	if (!courseId) {
-		return add;
-	}
+	// if (!courseId) {
+	// 	console.log(courseId);
+	// 	// return add;
+	// }
+	// console.log('test');
+	// // return update;
+	return update;
 };
 
 export default CourseForm;

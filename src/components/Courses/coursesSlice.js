@@ -28,12 +28,15 @@ export const addNewCourse = createAsyncThunk(
 export const updateCourse = createAsyncThunk(
 	'courses/updateCourse',
 	async (initialCourse) => {
+		console.log(initialCourse);
 		const { id } = initialCourse;
+		// console.log(id);
 		try {
 			const { data } = await API.put(
 				`${routes.updateCourse}/${id}`,
 				initialCourse
 			);
+			console.log(data);
 			return data.result;
 		} catch (err) {
 			return err.message;
@@ -45,6 +48,7 @@ export const updateCourse = createAsyncThunk(
 export const deleteCourse = createAsyncThunk(
 	'courses/deleteCourse',
 	async (initialCourse) => {
+		// console.log(initialCourse);
 		const { id } = initialCourse;
 
 		try {
