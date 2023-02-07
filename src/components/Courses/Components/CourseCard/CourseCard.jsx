@@ -7,7 +7,7 @@ import findAutor from '../../../../helpers/findAuthors';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch } from 'react-redux';
-import { courseDeleted } from '../../coursesSlice';
+import { deleteCourse } from '../../coursesSlice';
 
 const CourseCard = ({
 	id,
@@ -17,16 +17,15 @@ const CourseCard = ({
 	duration,
 	authors,
 	authorsList,
-	setCourses,
-	courses,
 	logedUser,
 }) => {
 	const dispatch = useDispatch();
 	const handleDeleteClick = (id) => {
-		dispatch(courseDeleted({ id }));
-		setCourses(courses);
+		dispatch(deleteCourse({ id }));
 	};
-	// console.log(authors);
+
+	const handleEditClick = (id) => {};
+
 	return (
 		<>
 			<article className='course'>
@@ -53,7 +52,14 @@ const CourseCard = ({
 							<Button value='Show course' />
 						</Link>
 						{logedUser.role === 'admin' ? (
-							<Button value={<FontAwesomeIcon icon={faEdit} />} />
+							<Button
+								value={
+									<FontAwesomeIcon
+										icon={faEdit}
+										onClick={() => handleEditClick(id)}
+									/>
+								}
+							/>
 						) : (
 							''
 						)}

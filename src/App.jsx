@@ -5,7 +5,7 @@ import Courses from './components/Courses/Courses';
 import Registration from './components/Registration/Registration';
 import Login from './components/Login/Login';
 import CourseInfo from './components/CourseInfo/CourseInfo';
-import CreateCourse from './components/CreateCourse/CreateCourse';
+import CourseForm from './components/CourseForm/CourseForm';
 
 import Error from './components/Error/Error';
 import ProtectedRoute from './helpers/ProtectedRoute';
@@ -33,7 +33,7 @@ function App() {
 						element={
 							<ProtectedRoute>
 								<UserProtectedRoute>
-									<CreateCourse />
+									<CourseForm />
 								</UserProtectedRoute>
 							</ProtectedRoute>
 						}

@@ -25,6 +25,37 @@ export const addNewCourse = createAsyncThunk(
 	}
 );
 
+export const updateCourse = createAsyncThunk(
+	'courses/updateCourse',
+	async (initialCourse) => {
+		const { id } = initialCourse;
+		try {
+			const { data } = await API.put(
+				`${routes.updateCourse}/${id}`,
+				initialCourse
+			);
+			return data.result;
+		} catch (err) {
+			return err.message;
+			// return initialCourse;
+		}
+	}
+);
+
+export const deleteCourse = createAsyncThunk(
+	'courses/deleteCourse',
+	async (initialCourse) => {
+		const { id } = initialCourse;
+
+		try {
+			const { data } = await API.delete(`${routes.deleteCourse}/${id}`);
+			if (data?.successful === true) return initialCourse;
+		} catch (err) {
+			return err.message;
+		}
+	}
+);
+
 const coursesSlice = createSlice({
 	name: 'courses',
 	initialState,
@@ -53,8 +84,17 @@ const coursesSlice = createSlice({
 				state.error = action.error.message;
 			})
 			.addCase(addNewCourse.fulfilled, (state, action) => {
-				// state.status = 'idle';
 				state.courses.push(action.payload);
+			})
+			.addCase(deleteCourse.fulfilled, (state, action) => {
+				if (!action.payload?.id) {
+					console.log('Delete could not complete');
+					console.log(action.payload);
+					return;
+				}
+				const { id } = action.payload;
+				const courses = state.courses.filter((course) => course.id !== id);
+				state.courses = courses;
 			});
 	},
 });
