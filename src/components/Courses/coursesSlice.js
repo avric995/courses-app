@@ -86,6 +86,16 @@ const coursesSlice = createSlice({
 			.addCase(addNewCourse.fulfilled, (state, action) => {
 				state.courses.push(action.payload);
 			})
+			.addCase(updateCourse.fulfilled, (state, action) => {
+				if (!action.payload?.id) {
+					console.log('Update could not complete');
+					console.log(action.payload);
+					return;
+				}
+				const { id } = action.payload;
+				const courses = state.courses.filter((course) => course.id !== id);
+				state.courses = [...courses, action.payload];
+			})
 			.addCase(deleteCourse.fulfilled, (state, action) => {
 				if (!action.payload?.id) {
 					console.log('Delete could not complete');

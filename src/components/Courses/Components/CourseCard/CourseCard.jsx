@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './courseCard.scss';
 import Button from '../../../../common/Button/Button';
 import timeConvert from '../../../../helpers/pripeDuration';
@@ -19,12 +19,15 @@ const CourseCard = ({
 	authorsList,
 	logedUser,
 }) => {
+	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const handleDeleteClick = (id) => {
 		dispatch(deleteCourse({ id }));
 	};
 
-	const handleEditClick = (id) => {};
+	const handleEditClick = (id) => {
+		navigate(`/courses/update/${id}`);
+	};
 
 	return (
 		<>
@@ -56,7 +59,7 @@ const CourseCard = ({
 								value={
 									<FontAwesomeIcon
 										icon={faEdit}
-										onClick={() => handleEditClick(id)}
+										onClick={(e) => handleEditClick(id)}
 									/>
 								}
 							/>

@@ -39,6 +39,16 @@ function App() {
 						}
 					/>
 					<Route
+						path='courses/update/:courseId'
+						element={
+							<ProtectedRoute>
+								<UserProtectedRoute>
+									<CourseForm />
+								</UserProtectedRoute>
+							</ProtectedRoute>
+						}
+					/>
+					<Route
 						path='courses/:courseId'
 						element={
 							<ProtectedRoute>
