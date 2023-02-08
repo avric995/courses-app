@@ -61,4 +61,5 @@ export const routes = {
 	deleteCourse: '/courses',
 	allAuthors: '/authors/all',
 	addAuthor: '/authors/add',
+	currentUser: '/users/me',
 };

@@ -19,7 +19,6 @@ export const fetchCourses = createAsyncThunk(
 export const addNewCourse = createAsyncThunk(
 	'courses/addNewCourse',
 	async (initialCourse) => {
-		// console.log(initialCourse);
 		const { data } = await API.post(routes.addCourse, initialCourse);
 		return data.result;
 	}
@@ -30,7 +29,6 @@ export const updateCourse = createAsyncThunk(
 	async (initialCourse) => {
 		console.log(initialCourse);
 		const { id } = initialCourse;
-		// console.log(id);
 		try {
 			const { data } = await API.put(
 				`${routes.updateCourse}/${id}`,
@@ -40,7 +38,6 @@ export const updateCourse = createAsyncThunk(
 			return data.result;
 		} catch (err) {
 			return err.message;
-			// return initialCourse;
 		}
 	}
 );
@@ -48,7 +45,6 @@ export const updateCourse = createAsyncThunk(
 export const deleteCourse = createAsyncThunk(
 	'courses/deleteCourse',
 	async (initialCourse) => {
-		// console.log(initialCourse);
 		const { id } = initialCourse;
 
 		try {
@@ -64,15 +60,14 @@ const coursesSlice = createSlice({
 	name: 'courses',
 	initialState,
 	reducers: {
-		courseAdded(state, action) {
-			state.courses.push(action.payload);
-		},
-		courseUpdated(state, action) {},
-		courseDeleted(state, action) {
-			const { id } = action.payload;
-			const newCourses = state.courses.filter((course) => course.id !== id);
-			state.courses = newCourses;
-		},
+		// courseAdded(state, action) {
+		// 	state.courses.push(action.payload);
+		// },
+		// courseDeleted(state, action) {
+		// 	const { id } = action.payload;
+		// 	const newCourses = state.courses.filter((course) => course.id !== id);
+		// 	state.courses = newCourses;
+		// },
 	},
 	extraReducers(builder) {
 		builder
@@ -117,8 +112,8 @@ export const selectAllCourses = (state) => state.courses.courses;
 export const getCoursesStatus = (state) => state.courses.status;
 export const getCoursesError = (state) => state.courses.error;
 
-export const { courseAdded, courseDeleted, courseUpdated } =
-	coursesSlice.actions;
+// export const { courseAdded, courseDeleted, courseUpdated } =
+// 	coursesSlice.actions;
 
 export const selectCourseById = (state, courseId) =>
 	state.courses.courses.find((course) => course.id === courseId);
