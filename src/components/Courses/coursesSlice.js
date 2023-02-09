@@ -27,14 +27,13 @@ export const addNewCourse = createAsyncThunk(
 export const updateCourse = createAsyncThunk(
 	'courses/updateCourse',
 	async (initialCourse) => {
-		console.log(initialCourse);
 		const { id } = initialCourse;
 		try {
 			const { data } = await API.put(
 				`${routes.updateCourse}/${id}`,
 				initialCourse
 			);
-			console.log(data);
+
 			return data.result;
 		} catch (err) {
 			return err.message;
@@ -44,12 +43,10 @@ export const updateCourse = createAsyncThunk(
 
 export const deleteCourse = createAsyncThunk(
 	'courses/deleteCourse',
-	async (initialCourse) => {
-		const { id } = initialCourse;
-
+	async (id) => {
 		try {
 			const { data } = await API.delete(`${routes.deleteCourse}/${id}`);
-			if (data?.successful === true) return initialCourse;
+			if (data?.successful === true) return id;
 		} catch (err) {
 			return err.message;
 		}
@@ -59,16 +56,7 @@ export const deleteCourse = createAsyncThunk(
 const coursesSlice = createSlice({
 	name: 'courses',
 	initialState,
-	reducers: {
-		// courseAdded(state, action) {
-		// 	state.courses.push(action.payload);
-		// },
-		// courseDeleted(state, action) {
-		// 	const { id } = action.payload;
-		// 	const newCourses = state.courses.filter((course) => course.id !== id);
-		// 	state.courses = newCourses;
-		// },
-	},
+	reducers: {},
 	extraReducers(builder) {
 		builder
 			.addCase(fetchCourses.pending, (state, action) => {
@@ -96,12 +84,12 @@ const coursesSlice = createSlice({
 				state.courses = [...courses, action.payload];
 			})
 			.addCase(deleteCourse.fulfilled, (state, action) => {
-				if (!action.payload?.id) {
+				if (!action.payload) {
 					console.log('Delete could not complete');
 					console.log(action.payload);
 					return;
 				}
-				const { id } = action.payload;
+				const id = action.payload;
 				const courses = state.courses.filter((course) => course.id !== id);
 				state.courses = courses;
 			});
@@ -111,9 +99,6 @@ const coursesSlice = createSlice({
 export const selectAllCourses = (state) => state.courses.courses;
 export const getCoursesStatus = (state) => state.courses.status;
 export const getCoursesError = (state) => state.courses.error;
-
-// export const { courseAdded, courseDeleted, courseUpdated } =
-// 	coursesSlice.actions;
 
 export const selectCourseById = (state, courseId) =>
 	state.courses.courses.find((course) => course.id === courseId);

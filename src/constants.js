@@ -62,4 +62,5 @@ export const routes = {
 	allAuthors: '/authors/all',
 	addAuthor: '/authors/add',
 	currentUser: '/users/me',
+	logout: '/logout',
 };

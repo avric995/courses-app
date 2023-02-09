@@ -12,15 +12,19 @@ const initialState = {
 	},
 };
 
-export const fetchCurrentUser = createAsyncThunk(
-	'authors/fetchCurrentUser',
-	async () => {
-		const { data } = await API.get(routes.currentUser);
-		return data.result;
+export const logoutUser = createAsyncThunk(
+	'courses/logoutUser',
+	async (token) => {
+		try {
+			const response = await API.delete(routes.logout, {
+				headers: { Authorization: token },
+			});
+			if (response.status === 200) return token;
+		} catch (err) {
+			return err.message;
+		}
 	}
 );
-
-// export const logout = createAsyncThunk
 
 const userSlice = createSlice({
 	name: 'user',
@@ -33,15 +37,18 @@ const userSlice = createSlice({
 			state.user.token = action.payload.token;
 			state.user.role = action.payload.role;
 		},
-		logout(state) {
-			state.user = { isAuth: false, name: '', email: '', token: '', role: '' };
-		},
 	},
-	// extraReducers(builder) {
-	// 	builder.addCase(fetchCurrentUser.fulfilled, (state, action) => {
-	// 		state.user.role = action.payload.role;
-	// 	});
-	// },
+	extraReducers(builder) {
+		builder.addCase(logoutUser.fulfilled, (state) => {
+			state.user = {
+				isAuth: false,
+				name: '',
+				email: '',
+				token: '',
+				role: '',
+			};
+		});
+	},
 });
 
 export const user = (state) => state.user.user;

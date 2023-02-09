@@ -22,7 +22,7 @@ const CourseCard = ({
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const handleDeleteClick = (id) => {
-		dispatch(deleteCourse({ id }));
+		dispatch(deleteCourse(id));
 	};
 
 	const handleEditClick = (id) => {

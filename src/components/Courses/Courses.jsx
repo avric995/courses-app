@@ -64,8 +64,6 @@ const Courses = () => {
 				<CourseCard
 					key={course.id}
 					{...course}
-					// setCourses={setAllCourses}
-					// courses={courses}
 					authorsList={authors}
 					logedUser={logedUser}
 				/>

@@ -3,15 +3,15 @@ import { Outlet } from 'react-router-dom';
 import Button from '../../common/Button/Button';
 import { Logo } from './components/Logo/Logo';
 import { useSelector, useDispatch } from 'react-redux';
-import { user } from '../../features/user/userSlice';
-import { logout } from '../../features/user/userSlice';
+import { logoutUser, user } from '../../features/user/userSlice';
 
 const Header = () => {
 	const dispatch = useDispatch();
 	const logedUser = useSelector(user);
+	const tokenWithBearer = `Bearer ${logedUser.token}`;
 
 	const logoutClick = () => {
-		dispatch(logout());
+		dispatch(logoutUser(tokenWithBearer));
 		localStorage.clear('token');
 	};
 	return (

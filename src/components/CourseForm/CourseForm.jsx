@@ -16,7 +16,6 @@ import {
 	addNewAuthor,
 	selectAllAuthors,
 } from '../../features/authors/authorsSlice';
-// import findAutor from '../../helpers/findAuthors';
 
 const CourseForm = () => {
 	const dispatch = useDispatch();
@@ -178,7 +177,7 @@ const CourseForm = () => {
 			!selectedCourse
 				? dispatch(addNewCourse(newCourse))
 				: dispatch(updateCourse({ id: selectedCourse.id, ...newCourse }));
-			// setAllAuthors(authors);
+
 			navigate('/courses');
 		}
 	};
