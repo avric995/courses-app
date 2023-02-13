@@ -1,8 +1,29 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { API } from '../../api/axios';
+import { routes } from '../../constants';
 
 const initialState = {
-	user: { isAuth: false, name: '', email: '', token: '' },
+	user: {
+		isAuth: false,
+		name: '',
+		email: '',
+		token: '',
+		role: '',
+	},
 };
+
+export const logoutUser = createAsyncThunk(
+	'courses/logoutUser',
+	async (token) => {
+		try {
+			await API.delete(routes.logout, {
+				headers: { Authorization: token },
+			});
+		} catch (err) {
+			return err.message;
+		}
+	}
+);
 
 const userSlice = createSlice({
 	name: 'user',
@@ -13,10 +34,19 @@ const userSlice = createSlice({
 			state.user.name = action.payload.name;
 			state.user.email = action.payload.email;
 			state.user.token = action.payload.token;
+			state.user.role = action.payload.role;
 		},
-		logout(state) {
-			state.user = { isAuth: false, name: '', email: '', token: '' };
-		},
+	},
+	extraReducers(builder) {
+		builder.addCase(logoutUser.fulfilled, (state) => {
+			state.user = {
+				isAuth: false,
+				name: '',
+				email: '',
+				token: '',
+				role: '',
+			};
+		});
 	},
 });
 

@@ -1,74 +1,102 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { v4 as uuidv4 } from 'uuid';
+import { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+// import { v4 as uuidv4 } from 'uuid';
 import './createCourse.scss';
 import Input from '../../common/Input/Input';
 import Button from '../../common/Button/Button';
 import timeConvert from '../../helpers/pripeDuration';
 
-import { courseAdded } from '../Courses/coursesSlice';
+import {
+	addNewCourse,
+	selectCourseById,
+	updateCourse,
+} from '../Courses/coursesSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-	authorAdded,
+	addNewAuthor,
 	selectAllAuthors,
 } from '../../features/authors/authorsSlice';
 
-const CreateCourse = () => {
+const CourseForm = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
 	const authors = useSelector(selectAllAuthors);
 
-	const [addAuthor, setAddAuthor] = useState({
-		name: '',
-	});
-	const [allAuthors, setAllAuthors] = useState(authors);
+	const { courseId } = useParams();
 
-	const [duration, setDuration] = useState(0);
+	const selectedCourse = useSelector((state) =>
+		selectCourseById(state, courseId)
+	);
 
-	const [courseAuthorsList, setCourseAuthorsList] = useState([]);
+	const authorOnCourseList = [];
 
-	const [addCourse, setAddCourse] = useState({
-		title: '',
-		description: '',
-	});
+	let allAuthorsList = [];
+	if (selectedCourse) {
+		for (const id of selectedCourse.authors) {
+			let selectedCourseAuthor = authors.find((author) => author.id === id);
+
+			authorOnCourseList.push(selectedCourseAuthor);
+		}
+
+		allAuthorsList = authors.filter(
+			(author) => !authorOnCourseList.includes(author)
+		);
+	}
+
+	const [addAuthor, setAddAuthor] = useState('');
+
+	const [allAuthors, setAllAuthors] = useState(
+		selectedCourse ? allAuthorsList : []
+	);
+
+	const [duration, setDuration] = useState(
+		selectedCourse ? selectedCourse.duration : 0
+	);
+
+	const [courseAuthorsList, setCourseAuthorsList] = useState(
+		selectedCourse ? authorOnCourseList : []
+	);
+
+	const [title, setTitle] = useState(
+		selectedCourse ? selectedCourse.title : ''
+	);
+
+	const [description, setDescription] = useState(
+		selectedCourse ? selectedCourse.description : ''
+	);
+
+	useEffect(() => {
+		selectedCourse ? setAllAuthors(allAuthorsList) : setAllAuthors(authors);
+	}, [authors, selectedCourse]);
 
 	// Add Author
 
 	const handleAddFormChange = (event) => {
 		event.preventDefault();
 
-		const fieldName = event.target.getAttribute('name');
+		const addedAuthorName = event.target.value;
 
-		const fieldValue = event.target.value;
-
-		const newFormData = { ...addAuthor };
-		newFormData[fieldName] = fieldValue;
-
-		setAddAuthor(newFormData);
+		setAddAuthor(addedAuthorName);
 	};
 
 	const handleAddFormSubmit = (event) => {
 		event.preventDefault();
-		const name = addAuthor.name;
+		const name = addAuthor;
 		if (name === '') {
 			alert('Input name cant be empty');
 		} else if (name.length <= 2) {
 			alert('Must contain 2 or more char');
 		} else {
 			const newAuthor = {
-				id: uuidv4(),
 				name: name,
 			};
 
-			dispatch(authorAdded(newAuthor));
+			dispatch(addNewAuthor(newAuthor));
+			setAllAuthors(authors);
 
-			setAllAuthors((prevState) => [...prevState, newAuthor]);
+			setAddAuthor('');
 		}
-
-		const inputField = document.querySelector('.input-author');
-
-		inputField.value = '';
 	};
 
 	// Add duration
@@ -111,37 +139,26 @@ const CreateCourse = () => {
 
 	// add course
 
-	const handleAddCourseFormChange = (event) => {
+	const handleAddCourseTitle = (event) => {
 		event.preventDefault();
 
-		const fieldName = event.target.getAttribute('name');
+		const title = event.target.value;
+		setTitle(title);
+	};
 
-		const fieldValue = event.target.value;
-
-		const newFormData = { ...addCourse };
-		newFormData[fieldName] = fieldValue;
-
-		setAddCourse(newFormData);
+	const handleAddCourseDescription = (event) => {
+		event.preventDefault();
+		const description = event.target.value;
+		setDescription(description);
 	};
 
 	const handleAddCourseFormSubmit = (event) => {
 		event.preventDefault();
-		const today = new Date();
-		const yyyy = today.getFullYear();
-		let mm = today.getMonth() + 1; // Meseci krecu od 0!
-		let dd = today.getDate();
-
-		if (dd < 10) dd = '0' + dd;
-		if (mm < 10) mm = '0' + mm;
-
-		const formattedToday = dd + '/' + mm + '/' + yyyy;
 
 		const newCourse = {
-			id: uuidv4(),
-			title: addCourse.title,
-			description: addCourse.description,
-			creationDate: formattedToday,
-			duration: duration,
+			title: title,
+			description: description,
+			duration: Number(duration),
 			authors:
 				courseAuthorsList.length === 0
 					? []
@@ -157,8 +174,10 @@ const CreateCourse = () => {
 		} else if (newCourse.authors.length === 0) {
 			alert('Please select authors');
 		} else {
-			dispatch(courseAdded(newCourse));
-			setAllAuthors(authors);
+			!selectedCourse
+				? dispatch(addNewCourse(newCourse))
+				: dispatch(updateCourse({ id: selectedCourse.id, ...newCourse }));
+
 			navigate('/courses');
 		}
 	};
@@ -171,11 +190,16 @@ const CreateCourse = () => {
 						placeholderText='Enter title...'
 						type='text'
 						lableText='Title'
+						value={title}
 						name='title'
 						id='title'
-						onChange={handleAddCourseFormChange}
+						onChange={handleAddCourseTitle}
 					/>
-					<Button value='Add Course' type='submit' />
+
+					<Button
+						value={courseId ? 'Update Course' : 'Add Course'}
+						type='submit'
+					/>
 				</div>
 				<label htmlFor='desc'>Description</label>
 				<textarea
@@ -185,7 +209,8 @@ const CreateCourse = () => {
 					rows='10'
 					minLength='2'
 					placeholder='Enter description'
-					onChange={handleAddCourseFormChange}
+					value={description}
+					onChange={handleAddCourseDescription}
 				></textarea>
 				<div className='add-div'>
 					<div className='add-author'>
@@ -197,6 +222,7 @@ const CreateCourse = () => {
 							name='name'
 							type='text'
 							min='2'
+							value={addAuthor}
 							onChange={handleAddFormChange}
 							className='input-author'
 						/>
@@ -227,6 +253,7 @@ const CreateCourse = () => {
 							min='1'
 							lableText='Duration'
 							name='duration'
+							value={duration}
 							onChange={handleAddDurationChange}
 						/>
 						<p>
@@ -255,4 +282,4 @@ const CreateCourse = () => {
 	);
 };
 
-export default CreateCourse;
+export default CourseForm;

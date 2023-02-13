@@ -18,6 +18,7 @@ import {
 	selectAllAuthors,
 	fetchAuthors,
 } from '../../features/authors/authorsSlice';
+import { user } from '../../features/user/userSlice';
 
 const Courses = () => {
 	const dispatch = useDispatch();
@@ -27,9 +28,12 @@ const Courses = () => {
 	const [allCourses, setAllCourses] = useState([]);
 
 	const coursesStatus = useSelector(getCoursesStatus);
+
 	const error = useSelector(getCoursesError);
 
 	const authors = useSelector(selectAllAuthors);
+
+	const logedUser = useSelector(user);
 
 	const [query, setQuery] = useState('');
 
@@ -41,10 +45,16 @@ const Courses = () => {
 	}, [coursesStatus, dispatch]);
 
 	useEffect(() => {
-		if (courses && !allCourses.length) {
+		if (courses) {
 			setAllCourses(courses);
 		}
-	}, [courses, allCourses]);
+	}, [courses]);
+
+	useEffect(() => {
+		if (query === '') {
+			setAllCourses(courses);
+		}
+	}, [query, courses]);
 	let content;
 	if (coursesStatus === 'loading') {
 		content = <p>"Loading..."</p>;
@@ -54,9 +64,8 @@ const Courses = () => {
 				<CourseCard
 					key={course.id}
 					{...course}
-					setCourses={setAllCourses}
-					courses={courses}
 					authorsList={authors}
+					logedUser={logedUser}
 				/>
 			);
 		});
@@ -76,9 +85,13 @@ const Courses = () => {
 						setAllCourses={setAllCourses}
 						query={query}
 					/>
-					<Link to='add'>
-						<Button value='Add new course' />
-					</Link>
+					{logedUser.role === 'admin' ? (
+						<Link to='add'>
+							<Button value='Add new course' />
+						</Link>
+					) : (
+						''
+					)}
 				</div>
 				<div>{content}</div>
 			</section>

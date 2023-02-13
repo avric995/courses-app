@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './courseCard.scss';
 import Button from '../../../../common/Button/Button';
 import timeConvert from '../../../../helpers/pripeDuration';
@@ -7,7 +7,7 @@ import findAutor from '../../../../helpers/findAuthors';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch } from 'react-redux';
-import { courseDeleted } from '../../coursesSlice';
+import { deleteCourse } from '../../coursesSlice';
 
 const CourseCard = ({
 	id,
@@ -17,14 +17,18 @@ const CourseCard = ({
 	duration,
 	authors,
 	authorsList,
-	setCourses,
-	courses,
+	logedUser,
 }) => {
+	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const handleDeleteClick = (id) => {
-		dispatch(courseDeleted({ id }));
-		setCourses(courses);
+		dispatch(deleteCourse(id));
 	};
+
+	const handleEditClick = (id) => {
+		navigate(`/courses/update/${id}`);
+	};
+
 	return (
 		<>
 			<article className='course'>
@@ -50,15 +54,30 @@ const CourseCard = ({
 						<Link to={`${id}`}>
 							<Button value='Show course' />
 						</Link>
-						<Button value={<FontAwesomeIcon icon={faEdit} />} />
-						<Button
-							value={
-								<FontAwesomeIcon
-									icon={faTrash}
-									onClick={() => handleDeleteClick(id)}
-								/>
-							}
-						/>
+						{logedUser.role === 'admin' ? (
+							<Button
+								value={
+									<FontAwesomeIcon
+										icon={faEdit}
+										onClick={(e) => handleEditClick(id)}
+									/>
+								}
+							/>
+						) : (
+							''
+						)}
+						{logedUser.role === 'admin' ? (
+							<Button
+								value={
+									<FontAwesomeIcon
+										icon={faTrash}
+										onClick={() => handleDeleteClick(id)}
+									/>
+								}
+							/>
+						) : (
+							''
+						)}
 					</div>
 				</div>
 			</article>

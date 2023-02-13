@@ -4,7 +4,7 @@ import './registration.scss';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Input from '../../common/Input/Input';
-import axios from '../../api/axios';
+import { API } from '../../api/axios';
 
 const REGISTER_URL = '/register';
 
@@ -19,7 +19,7 @@ const Registration = () => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		try {
-			const response = await axios.post(REGISTER_URL, JSON.stringify(newUser), {
+			await API.post(REGISTER_URL, JSON.stringify(newUser), {
 				headers: { 'Content-Type': 'application/json' },
 			});
 

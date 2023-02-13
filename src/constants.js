@@ -57,5 +57,9 @@ export const routes = {
 	register: '/register',
 	allCourses: '/courses/all',
 	addCourse: '/courses/add',
+	modifyCourse: '/courses',
 	allAuthors: '/authors/all',
+	addAuthor: '/authors/add',
+	currentUser: '/users/me',
+	logout: '/logout',
 };

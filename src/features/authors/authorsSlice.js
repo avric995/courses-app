@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from '../../api/axios';
+import { API } from '../../api/axios';
 import { routes } from '../../constants';
 
 const initialState = {
@@ -9,27 +9,43 @@ const initialState = {
 export const fetchAuthors = createAsyncThunk(
 	'authors/fetchAuthors',
 	async () => {
-		const { data } = await axios.get(routes.allAuthors);
-		return data;
+		try {
+			const { data } = await API.get(routes.allAuthors);
+			return data;
+		} catch (err) {
+			return err.message;
+		}
+	}
+);
+
+export const addNewAuthor = createAsyncThunk(
+	'courses/addNewAuthor',
+	async (initialAuthor) => {
+		try {
+			const { data } = await API.post(routes.addAuthor, initialAuthor);
+			return data.result;
+		} catch (err) {
+			return err.message;
+		}
 	}
 );
 
 const authorsSlice = createSlice({
 	name: 'authors',
 	initialState,
-	reducers: {
-		authorAdded(state, action) {
-			state.authors.push(action.payload);
-		},
-	},
+	reducers: {},
 	extraReducers(builder) {
-		builder.addCase(fetchAuthors.fulfilled, (state, action) => {
-			state.authors = action.payload.result;
-		});
+		builder
+			.addCase(fetchAuthors.fulfilled, (state, action) => {
+				state.status = 'success';
+				state.authors = action.payload.result;
+			})
+
+			.addCase(addNewAuthor.fulfilled, (state, action) => {
+				state.authors.push(action.payload);
+			});
 	},
 });
-
-export const { authorAdded } = authorsSlice.actions;
 
 export const selectAllAuthors = (state) => state.authors.authors;
 

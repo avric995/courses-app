@@ -2,9 +2,10 @@ import { Navigate } from 'react-router-dom';
 
 import { useSelector } from 'react-redux';
 import { user } from '../features/user/userSlice';
-const ProtectedRoute = ({ children }) => {
+const UserProtectedRoute = ({ children }) => {
 	const logedUser = useSelector(user);
 
-	return logedUser.token ? children : <Navigate to='/login' />;
+	return logedUser.role === 'admin' ? children : <Navigate to={'/courses'} />;
 };
-export default ProtectedRoute;
+
+export default UserProtectedRoute;
