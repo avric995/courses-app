@@ -5,6 +5,6 @@ import { user } from '../features/user/userSlice';
 const ProtectedRoute = ({ children }) => {
 	const logedUser = useSelector(user);
 
-	return <>{logedUser.token ? children : <Navigate to='/login' />}</>;
+	return logedUser.token ? children : <Navigate to='/login' />;
 };
 export default ProtectedRoute;

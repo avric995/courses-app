@@ -11,16 +11,25 @@ const initialState = {
 export const fetchCourses = createAsyncThunk(
 	'courses/fetchCourses',
 	async () => {
-		const { data } = await API.get(routes.allCourses);
-		return data;
+		try {
+			const { data } = await API.get(routes.allCourses);
+			return data;
+		} catch (err) {
+			return err.message;
+		}
 	}
 );
 
 export const addNewCourse = createAsyncThunk(
 	'courses/addNewCourse',
+
 	async (initialCourse) => {
-		const { data } = await API.post(routes.addCourse, initialCourse);
-		return data.result;
+		try {
+			const { data } = await API.post(routes.addCourse, initialCourse);
+			return data.result;
+		} catch (err) {
+			return err.message;
+		}
 	}
 );
 
@@ -30,7 +39,7 @@ export const updateCourse = createAsyncThunk(
 		const { id } = initialCourse;
 		try {
 			const { data } = await API.put(
-				`${routes.updateCourse}/${id}`,
+				`${routes.modifyCourse}/${id}`,
 				initialCourse
 			);
 
@@ -45,8 +54,9 @@ export const deleteCourse = createAsyncThunk(
 	'courses/deleteCourse',
 	async (id) => {
 		try {
-			const { data } = await API.delete(`${routes.deleteCourse}/${id}`);
-			if (data?.successful === true) return id;
+			await API.delete(`${routes.modifyCourse}/${id}`);
+
+			return id;
 		} catch (err) {
 			return err.message;
 		}

@@ -30,20 +30,25 @@ const CourseForm = () => {
 	);
 
 	const authorOnCourseList = [];
-	let auList = [];
+
+	let allAuthorsList = [];
 	if (selectedCourse) {
 		for (const id of selectedCourse.authors) {
-			let sAuth = authors.find((author) => author.id === id);
-			authorOnCourseList.push(sAuth);
+			let selectedCourseAuthor = authors.find((author) => author.id === id);
+
+			authorOnCourseList.push(selectedCourseAuthor);
 		}
 
-		auList = authors.filter((authors) => !authorOnCourseList.includes(authors));
+		allAuthorsList = authors.filter(
+			(author) => !authorOnCourseList.includes(author)
+		);
 	}
 
-	const [addAuthor, setAddAuthor] = useState({
-		name: '',
-	});
-	const [allAuthors, setAllAuthors] = useState(selectedCourse ? auList : []);
+	const [addAuthor, setAddAuthor] = useState('');
+
+	const [allAuthors, setAllAuthors] = useState(
+		selectedCourse ? allAuthorsList : []
+	);
 
 	const [duration, setDuration] = useState(
 		selectedCourse ? selectedCourse.duration : 0
@@ -62,7 +67,7 @@ const CourseForm = () => {
 	);
 
 	useEffect(() => {
-		if (!selectedCourse) setAllAuthors(authors);
+		selectedCourse ? setAllAuthors(allAuthorsList) : setAllAuthors(authors);
 	}, [authors, selectedCourse]);
 
 	// Add Author
@@ -70,19 +75,14 @@ const CourseForm = () => {
 	const handleAddFormChange = (event) => {
 		event.preventDefault();
 
-		const fieldName = event.target.getAttribute('name');
+		const addedAuthorName = event.target.value;
 
-		const fieldValue = event.target.value;
-
-		const newFormData = { ...addAuthor };
-		newFormData[fieldName] = fieldValue;
-
-		setAddAuthor(newFormData);
+		setAddAuthor(addedAuthorName);
 	};
 
 	const handleAddFormSubmit = (event) => {
 		event.preventDefault();
-		const name = addAuthor.name;
+		const name = addAuthor;
 		if (name === '') {
 			alert('Input name cant be empty');
 		} else if (name.length <= 2) {
@@ -222,6 +222,7 @@ const CourseForm = () => {
 							name='name'
 							type='text'
 							min='2'
+							value={addAuthor}
 							onChange={handleAddFormChange}
 							className='input-author'
 						/>

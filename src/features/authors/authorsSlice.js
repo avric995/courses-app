@@ -9,16 +9,24 @@ const initialState = {
 export const fetchAuthors = createAsyncThunk(
 	'authors/fetchAuthors',
 	async () => {
-		const { data } = await API.get(routes.allAuthors);
-		return data;
+		try {
+			const { data } = await API.get(routes.allAuthors);
+			return data;
+		} catch (err) {
+			return err.message;
+		}
 	}
 );
 
 export const addNewAuthor = createAsyncThunk(
 	'courses/addNewAuthor',
 	async (initialAuthor) => {
-		const { data } = await API.post(routes.addAuthor, initialAuthor);
-		return data.result;
+		try {
+			const { data } = await API.post(routes.addAuthor, initialAuthor);
+			return data.result;
+		} catch (err) {
+			return err.message;
+		}
 	}
 );
 

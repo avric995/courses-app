@@ -5,9 +5,7 @@ import { user } from '../features/user/userSlice';
 const UserProtectedRoute = ({ children }) => {
 	const logedUser = useSelector(user);
 
-	return (
-		<>{logedUser.role === 'admin' ? children : <Navigate to={'/courses'} />}</>
-	);
+	return logedUser.role === 'admin' ? children : <Navigate to={'/courses'} />;
 };
 
 export default UserProtectedRoute;

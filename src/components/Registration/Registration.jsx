@@ -19,7 +19,7 @@ const Registration = () => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		try {
-			const response = await API.post(REGISTER_URL, JSON.stringify(newUser), {
+			await API.post(REGISTER_URL, JSON.stringify(newUser), {
 				headers: { 'Content-Type': 'application/json' },
 			});
 

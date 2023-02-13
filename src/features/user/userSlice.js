@@ -16,10 +16,9 @@ export const logoutUser = createAsyncThunk(
 	'courses/logoutUser',
 	async (token) => {
 		try {
-			const response = await API.delete(routes.logout, {
+			await API.delete(routes.logout, {
 				headers: { Authorization: token },
 			});
-			if (response.status === 200) return token;
 		} catch (err) {
 			return err.message;
 		}
