@@ -1,6 +1,6 @@
+import React from 'react';
 import '../Logo/logo.css';
-import logo from '../img/courses.webp';
 
 export const Logo = () => (
-	<img src={logo} alt='logo img' className='logo-img' />
+	<img src='../img/courses.webp' alt='logo img' className='logo-img' />
 );

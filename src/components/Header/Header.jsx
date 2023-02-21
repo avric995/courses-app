@@ -4,11 +4,12 @@ import Button from '../../common/Button/Button';
 import { Logo } from './components/Logo/Logo';
 import { useSelector, useDispatch } from 'react-redux';
 import { logoutUser, user } from '../../features/user/userSlice';
+import React from 'react';
 
 const Header = () => {
 	const dispatch = useDispatch();
 	const logedUser = useSelector(user);
-	const tokenWithBearer = `Bearer ${logedUser.token}`;
+	const tokenWithBearer = `Bearer ${logedUser?.token}`;
 
 	const logoutClick = () => {
 		dispatch(logoutUser(tokenWithBearer));
@@ -21,8 +22,8 @@ const Header = () => {
 					<Logo />
 				</div>
 				<div className='btn-div'>
-					<p className='user-loged'>{logedUser.name}</p>
-					{logedUser.token ? (
+					<p className='user-loged'>{logedUser?.name}</p>
+					{logedUser?.token ? (
 						<Button value='Logout' onClick={logoutClick} />
 					) : null}
 				</div>
