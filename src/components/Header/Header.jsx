@@ -22,7 +22,9 @@ const Header = () => {
 					<Logo />
 				</div>
 				<div className='btn-div'>
-					<p className='user-loged'>{logedUser?.name}</p>
+					<p data-testid='paragraph' className='user-loged'>
+						{logedUser?.name}
+					</p>
 					{logedUser?.token ? (
 						<Button value='Logout' onClick={logoutClick} />
 					) : null}
