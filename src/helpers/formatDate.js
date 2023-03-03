@@ -1,3 +1,3 @@
 export default function formatDate(date) {
-	return date.replaceAll('/', '.');
+	return date?.replaceAll('/', '.');
 }

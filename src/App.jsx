@@ -6,6 +6,7 @@ import Registration from './components/Registration/Registration';
 import Login from './components/Login/Login';
 import CourseInfo from './components/CourseInfo/CourseInfo';
 import CourseForm from './components/CourseForm/CourseForm';
+import React from 'react';
 
 import Error from './components/Error/Error';
 import ProtectedRoute from './helpers/ProtectedRoute';
@@ -17,7 +18,7 @@ function App() {
 			<Header />
 			<BrowserRouter>
 				<Routes>
-					<Route index path='/' element={<Navigate to='login' />}></Route>
+					<Route index path='/' element={<Navigate to='courses' />}></Route>
 					<Route path='login' element={<Login />} />
 					<Route path='registration' element={<Registration />} />
 					<Route

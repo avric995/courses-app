@@ -5,6 +5,7 @@ import './createCourse.scss';
 import Input from '../../common/Input/Input';
 import Button from '../../common/Button/Button';
 import timeConvert from '../../helpers/pripeDuration';
+import React from 'react';
 
 import {
 	addNewCourse,
@@ -183,7 +184,7 @@ const CourseForm = () => {
 	};
 
 	return (
-		<section className='container-add'>
+		<section data-testid='CourseForm' className='container-add'>
 			<form onSubmit={handleAddCourseFormSubmit}>
 				<div className='header-div'>
 					<Input

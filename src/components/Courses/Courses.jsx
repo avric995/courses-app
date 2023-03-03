@@ -1,3 +1,4 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import CourseCard from './Components/CourseCard/CourseCard';
@@ -56,10 +57,11 @@ const Courses = () => {
 		}
 	}, [query, courses]);
 	let content;
+
 	if (coursesStatus === 'loading') {
 		content = <p>"Loading..."</p>;
 	} else if (coursesStatus === 'succeeded') {
-		content = allCourses.map((course) => {
+		content = allCourses?.map((course) => {
 			return (
 				<CourseCard
 					key={course.id}
@@ -75,7 +77,6 @@ const Courses = () => {
 
 	return (
 		<main>
-			(
 			<section className='container-list'>
 				<div className='section-element'>
 					<SearchBar
@@ -85,7 +86,7 @@ const Courses = () => {
 						setAllCourses={setAllCourses}
 						query={query}
 					/>
-					{logedUser.role === 'admin' ? (
+					{logedUser?.role === 'admin' ? (
 						<Link to='add'>
 							<Button value='Add new course' />
 						</Link>
@@ -93,9 +94,8 @@ const Courses = () => {
 						''
 					)}
 				</div>
-				<div>{content}</div>
+				<div data-testid='CourseCardContainer'>{content}</div>
 			</section>
-			)
 		</main>
 	);
 };
