@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import CourseCard from './Components/CourseCard/CourseCard';
-
+import React from 'react';
 import './courses.scss';
 import SearchBar from './Components/SearchBar/SearchBar';
 import Button from '../../common/Button/Button';
@@ -72,7 +72,6 @@ const Courses = () => {
 	} else if (coursesStatus === 'failed') {
 		content = <p>{error}</p>;
 	}
-
 	return (
 		<main>
 			(
@@ -87,7 +86,7 @@ const Courses = () => {
 					/>
 					{logedUser.role === 'admin' ? (
 						<Link to='add'>
-							<Button value='Add new course' />
+							<Button value='Add new course' data-testid='add-course-button' />
 						</Link>
 					) : (
 						''

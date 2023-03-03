@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 // import { v4 as uuidv4 } from 'uuid';
@@ -183,7 +184,7 @@ const CourseForm = () => {
 	};
 
 	return (
-		<section className='container-add'>
+		<section data-testid='course-form' className='container-add'>
 			<form onSubmit={handleAddCourseFormSubmit}>
 				<div className='header-div'>
 					<Input
