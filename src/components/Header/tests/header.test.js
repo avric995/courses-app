@@ -11,11 +11,13 @@ import configureStore from 'redux-mock-store';
 
 const mockInitialState = {
 	user: {
-		isAuth: false,
-		name: 'Mock',
-		email: 'mock@email.com',
-		token: 'asd',
-		role: 'admin',
+		user: {
+			isAuth: false,
+			name: 'Mock',
+			email: 'mock@email.com',
+			token: 'asd',
+			role: 'admin',
+		},
 	},
 };
 const mockStore = configureStore();

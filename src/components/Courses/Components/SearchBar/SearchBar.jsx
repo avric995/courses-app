@@ -1,3 +1,4 @@
+import React from 'react';
 import Input from '../../../../common/Input/Input';
 import Button from '../../../../common/Button/Button';
 import './searchBar.scss';
@@ -27,7 +28,7 @@ const SearchBar = ({
 	};
 
 	return (
-		<div className='search-div'>
+		<div title='search' className='search-div'>
 			<Input placeholderText={placeholderText} onChange={onChange} />
 			<Button value='Search' onClick={() => handleSearchClick(query)} />
 		</div>

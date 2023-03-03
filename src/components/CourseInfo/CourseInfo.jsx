@@ -7,6 +7,7 @@ import formatDate from '../../helpers/formatDate';
 import { useSelector } from 'react-redux';
 import { selectCourseById } from '../Courses/coursesSlice';
 import { selectAllAuthors } from '../../features/authors/authorsSlice';
+import React from 'react';
 
 const CourseInfo = () => {
 	const authors = useSelector(selectAllAuthors);

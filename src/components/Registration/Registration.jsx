@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Input from '../../common/Input/Input';
 import { API } from '../../api/axios';
+import React from 'react';
 
 const REGISTER_URL = '/register';
 

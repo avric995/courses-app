@@ -32,7 +32,7 @@ const CourseCard = ({
 
 	return (
 		<>
-			<article className='course'>
+			<article data-testid='CourseCard' className='course'>
 				<div className='flex-1'>
 					<h3>{title}</h3>
 					<p data-testid='desc'>{description}</p>
